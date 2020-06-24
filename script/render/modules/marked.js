@@ -64,7 +64,6 @@ const renderLaTeX = (function () {
 	const specialCharacters = ['<', '>']
 
 	const render = function (content, display) {
-		console.log(content, display)
 		return katex.renderToString(content, {
 			displayMode: display,
 			throwOnError: false
@@ -93,11 +92,25 @@ const renderLaTeX = (function () {
 	}
 })();
 
+const renderHighLight = (function () {
+	// const hljs = require('highlight.js');
+	// return function (content) {
+	// 	return hljs.highlightAuto(content).value;
+	// };
+
+	return function (content) {
+		return content + `
+			<link rel="stylesheet" href="/lib/highlight/tomorrow.css">
+			<script src="/lib/highlight/highlight.min.js"></script>
+			<script>hljs.initHighlightingOnLoad();</script>
+		`;
+	}
+})();
+
 module.exports = function (content) {
 	content = renderLaTeX(content);
 	content = marked(content);
+	content = renderHighLight(content);
 
 	return content;
 }
-
-renderLaTeX('$123$');
