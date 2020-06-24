@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title><%= title %></title>
+
+	<link rel='stylesheet' href='/css/style.css' />
+	<link rel='stylesheet' href='/lib/semantic/semantic.min.css' />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" />
+
+	<script type="text/javascript" src="/lib/jquery.min.js"></script>
+</head>
+
+<body>
+
+	<div class="ui borderless fixed menu">
+		<div class="ui container">
+			<a href="/" class="header item" style="font-size: 1.2rem;">
+				<%= config.title %>
+			</a>
+			<% Object.keys(config.menu.links).forEach(link => {
+				let data = config.menu.links[link]; %>
+				<% if (typeof(data) === 'object') { %>
+					<div class="ui dropdown item">
+						<%= link %>
+						<i class="dropdown icon"></i>
+						<div class="menu">
+							<% Object.keys(data).forEach(link => { %>
+								<% if (link === 'divider') { %>
+									<div class=""></div>
+								<% } else { %>
+									<a class="item" href="<%- data[link] %>"><%= link %></a>
+								<% } %>
+							<% }); %>
+						</div>
+					</div>
+				<% } else { %>
+					<a class="item" href="<%- data %>"><%= link %></a>
+				<% } %>
+			<% }); %>
+			<div class="right menu">
+				<div class="item">
+					<div class="ui action left icon input">
+						<i class="search icon"></i>
+						<input type="text" placeholder="搜索">
+						<button class="ui button">提交</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="ui main container" id="container" style="margin-top: 80px; margin-bottom: 60px;">

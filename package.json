@@ -1,0 +1,45 @@
+{
+  "name": "yuyu",
+  "version": "1.0.0",
+  "description": "yuyu",
+  "main": "index.js",
+  "scripts": {
+    "test": "./bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/memset0/yuyu.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/memset0/yuyu/issues"
+  },
+  "homepage": "https://github.com/memset0/yuyu#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "commander": "^5.1.0",
+    "cookie-parser": "^1.4.5",
+    "debug": "^4.1.1",
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "gulp": "^4.0.2",
+    "highlight.js": "^10.1.1",
+    "http-errors": "^1.7.3",
+    "katex": "^0.11.1",
+    "less-middleware": "^3.1.0",
+    "lodash": "^4.17.15",
+    "lru-cache": "^5.1.1",
+    "marked": "^1.1.0",
+    "mathjax": "^3.0.5",
+    "mathjax-full": "^3.0.5",
+    "md5": "^2.2.1",
+    "moment": "^2.27.0",
+    "morgan": "^1.10.0",
+    "rd": "^2.0.1",
+    "string-random": "^0.1.3",
+    "superagent": "^5.2.2",
+    "xmorse": "^1.0.0",
+    "yaml": "^1.10.0"
+  }
+}

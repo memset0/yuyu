@@ -1,3 +1,11 @@
+src
+dist
+config.yml
+views/*/static/css/*.css
+
+# Others
+.DS_Store
+
 # Logs
 logs
 *.log
