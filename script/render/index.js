@@ -23,7 +23,7 @@ function createBreadcrumb(uri) {
 	let href = '/';
 	Array.from(uri.split('/')).forEach(pathname => {
 		if (!pathname) { return; }
-		href = url.resolve(href, pathname);
+		href = href + pathname + '/'
 		breadcrumb.push({
 			name: pathname,
 			href: href,
