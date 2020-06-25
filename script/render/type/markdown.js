@@ -4,7 +4,6 @@ const YAML = require('yaml');
 
 const utils = require('../utils');
 const render = require('../renders');
-const global = require('../../global');
 
 module.exports = {
 	check: (pathname) => {
@@ -50,7 +49,6 @@ module.exports = {
 			res: {
 				template: 'article',
 				arguments: {
-					...global,
 					title: article.title + ' - 文章',
 					article: {
 						...article,

@@ -2,6 +2,9 @@ const fs = require('fs');
 const lib = require('./types');
 
 class File {
+	read() { return fs.readFileSync(this.path).toString(); }
+	write(content) { return fs.writeFileSync(this.path, content); }
+
 	render(args) {
 		if (!lib[this.type].render) { return { code: 403 }; }
 		return lib[this.type].render(this, { ...args });
@@ -26,4 +29,4 @@ class File {
 	}
 }
 
-module.exports=File;
+module.exports = File;

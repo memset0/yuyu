@@ -1,11 +1,11 @@
+const fs = require('fs');
 const path = require('path');
+const YAML = require('yaml');
 const express = require('express');
 
-// register global router
+// register global arguments
 global.router = require('./router')
-
-// global config
-const config = require('./config');
+global.config = YAML.parse(fs.readFileSync(path.join(__dirname, '../src/config.yml')).toString());
 
 // express app init.
 const logger = require('morgan');
@@ -22,12 +22,10 @@ app.use(lessMiddleware(path.join(__dirname, '../static')));
 app.use(express.static(path.join(__dirname, '../static'), { maxAge: config.static.max_age }));
 
 // router
-const indexRouter = require('./routes/index');
-const adminRouter = require('./routes/admin');
-app.use('/', indexRouter);
-app.use('/admin', adminRouter);
+app.use('/', require('./routes/index'));
+app.use('/admin', require('./routes/admin'));
 
-// catch 404
+// catch 404 error
 const createError = require('http-errors');
 app.use(function (req, res, next) {
   next(createError(404));

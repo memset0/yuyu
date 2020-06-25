@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const global_arguments = require('../global');
+
 router.get(/^.*$/, function (req, res, next) {
 	global.router.scan();
 	let data = global.router.data(req);
@@ -8,7 +10,7 @@ router.get(/^.*$/, function (req, res, next) {
 		if (data.type == 'file') {
 			res.sendFile(data.res.path);
 		} else if (data.type == 'page') {
-			res.render(data.res.template, data.res.arguments);
+			res.render(data.res.template, { ...global_arguments, ...data.res.arguments });
 		}
 	} else if (data.code == 301) {
 		res.redirect(301, data.res.url);

@@ -5,11 +5,14 @@ const path = require('path');
 const cheerio = require('cheerio');
 
 const marked = require('./marked');
+const utils = require('../utils');
 const global = require('../../global');
 
 let $ = cheerio.load('<html>');
 
 function apiFactory(uriRoot, pathRoot) {
+	uriRoot = path.normalize(uriRoot);
+	pathRoot = path.normalize(pathRoot);
 
 	let lib = {
 		uriResolve: now => url.resolve(uriRoot, now),
@@ -25,6 +28,8 @@ function apiFactory(uriRoot, pathRoot) {
 			})
 			return $.html(element);
 		},
+
+		listFiles: () => utils.listFiles(pathRoot),
 
 		includePlain: (path) => {
 			return fs.readFileSync(lib.pathResolve(path));
