@@ -47,23 +47,27 @@ function apiFactory(uriRoot, pathRoot) {
 			return $.html();
 		},
 
-		importHtml: (path) => {
+		importHtml: (path, { width = null, height = null } = {}) => {
 			return lib.createElement('iframe', 'Your browser does not support iframes.', {
 				attr: {
 					'class': 'md-iframe',
-					src: lib.uriResolve(path)
+					src: lib.uriResolve(path),
+					width: width || 400,
+					height: height || 300,
 				}
 			});
 		},
-		importPDF: (path, { width = null, height = null }) => {
+		importPDF: (path, { width = null, height = null } = {}) => {
 			return lib.createElement('iframe', 'Your browser does not support iframes.', {
 				attr: {
 					'class': 'md-pdf-viewer',
-					src: lib.uriResolve(path)
+					src: lib.uriResolve(path),
+					width: width || 400,
+					height: height || 300,
 				}
 			});
 		},
-		importOnedriveFile: (url, { width = null, height = null }) => {
+		importOnedriveFile: (url, { width = null, height = null } = {}) => {
 			return lib.createElement('iframe', 'Your browser does not support iframes.', {
 				attr: {
 					'class': 'md-iframe-onedrive',
