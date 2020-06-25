@@ -1,6 +1,8 @@
 src
 dist
 config.yml
+static/css/*.css
+views/static/css/*.css
 views/*/static/css/*.css
 
 # Others
