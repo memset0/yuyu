@@ -55,7 +55,7 @@ function apiFactory(uriRoot, pathRoot) {
 				}
 			});
 		},
-		importPDF: (path) => {
+		importPDF: (path, { width = null, height = null }) => {
 			return lib.createElement('iframe', 'Your browser does not support iframes.', {
 				attr: {
 					'class': 'md-pdf-viewer',
@@ -63,6 +63,18 @@ function apiFactory(uriRoot, pathRoot) {
 				}
 			});
 		},
+		importOnedriveFile: (url, { width = null, height = null }) => {
+			return lib.createElement('iframe', 'Your browser does not support iframes.', {
+				attr: {
+					'class': 'md-iframe-onedrive',
+					src: url,
+					width: width || 400,
+					height: height || 300,
+					frameborder: 0,
+					scrolling: 'no',
+				}
+			});
+		}
 	}
 
 	return lib;

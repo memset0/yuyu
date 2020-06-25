@@ -40,8 +40,8 @@ module.exports = {
 
 		article.title = article.title;
 		if (!article.title) {
-			article.title = pt.basename($.path, pt.extname($.path));
-			if (article.title == 'index') { article.title = pt.basename(pt.join($.path, '..')); }
+			article.title = path.basename($.path, path.extname($.path));
+			if (article.title == 'index') { article.title = path.basename(path.join($.path, '..')); }
 		}
 
 		return {
