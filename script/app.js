@@ -12,7 +12,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const lessMiddleware = require('less-middleware');
 let app = express();
-app.set('views', path.join(__dirname, '..', 'views', config.theme));
+app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
@@ -20,8 +20,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, '../static')));
 app.use(express.static(path.join(__dirname, '../static'), { maxAge: config.static.max_age }));
-app.use(lessMiddleware(path.join(__dirname, '../views', config.theme, 'static')));
-app.use(express.static(path.join(__dirname, '../views', config.theme, 'static'), { maxAge: config.static.max_age }));
 
 // router
 const indexRouter = require('./routes/index');
