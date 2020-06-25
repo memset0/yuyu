@@ -1,10 +1,4 @@
-const fs = require('fs');
-const url = require('url');
-const path = require('path');
-const YAML = require('yaml');
 const marked = require('marked');
-
-const config = require('../../config');
 
 // const renderLaTeX = (function () {
 // 	if (!config.mathjax.enable) {
@@ -59,58 +53,64 @@ const config = require('../../config');
 // }
 
 const renderLaTeX = (function () {
-	const katex = require('katex');
+  const katex = require('katex');
 
-	const specialCharacters = ['<', '>']
+  const specialCharacters = ['<', '>']
 
-	const render = function (content, display) {
-		return katex.renderToString(content, {
-			displayMode: display,
-			throwOnError: false
-		});
-	};
+  const render = function (content, display) {
+    return katex.renderToString(content, {
+      displayMode: display,
+      throwOnError: false
+    });
+  };
 
-	const renderText = function (content, openFlag, closeFlag, display) {
-		let result = '', stack = '';
-		Array.from(content).forEach(char => {
-			stack += char;
-			if (specialCharacters.includes(char) || (stack.length <= openFlag.length && !openFlag.startsWith(stack))) {
-				result += stack, stack = '';
-			} else if ((stack.length > closeFlag.length && stack.endsWith(closeFlag))) {
-				result += render(stack.slice(openFlag.length, -closeFlag.length), display), stack = '';
-			}
-		});
-		return result + stack;
-	};
+  const renderText = function (content, openFlag, closeFlag, display) {
+    let result = '', stack = '';
+    Array.from(content).forEach(char => {
+      stack += char;
+      if (specialCharacters.includes(char) || (stack.length <= openFlag.length && !openFlag.startsWith(stack))) {
+        result += stack, stack = '';
+      } else if ((stack.length > closeFlag.length && stack.endsWith(closeFlag))) {
+        result += render(stack.slice(openFlag.length, -closeFlag.length), display), stack = '';
+      }
+    });
+    return result + stack;
+  };
 
-	return function (content) {
-		content = renderText(content, '$$', '$$', true);
-		content = renderText(content, '$', '$', false);
-		// content = renderText(content, '\\[', '\\]', true);
-		// content = renderText(content, '\\(', '\\)', false);
-		return content;
-	}
+  return function (content) {
+    content = renderText(content, '$$', '$$', true);
+    content = renderText(content, '$', '$', false);
+    // content = renderText(content, '\\[', '\\]', true);
+    // content = renderText(content, '\\(', '\\)', false);
+    return content;
+  }
 })();
 
-const renderHighLight = (function () {
-	// const hljs = require('highlight.js');
-	// return function (content) {
-	// 	return hljs.highlightAuto(content).value;
-	// };
+const renderSemanticUI = (function () {
+  const cheerio = require('cheerio');
 
-	return function (content) {
-		return content + `
-			<link rel="stylesheet" href="/lib/highlight/tomorrow.css">
-			<script src="/lib/highlight/highlight.min.js"></script>
-			<script>hljs.initHighlightingOnLoad();</script>
-		`;
-	}
+  return function (content) {
+    let $ = cheerio.load(content);
+
+    // style for table
+    $('table').addClass('ui celled table');
+
+    // code highlight
+    if ($('pre code').length) {
+      $($('pre code')[0])
+        .append(`<link rel="stylesheet" href="/lib/highlight/tomorrow.css">
+			           <script src="/lib/highlight/highlight.min.js"></script>
+			           <script>hljs.initHighlightingOnLoad();</script>`)
+    }
+    
+    return $.html();
+  };
 })();
 
 module.exports = function (content) {
-	content = renderLaTeX(content);
-	content = marked(content);
-	content = renderHighLight(content);
+  content = renderLaTeX(content);
+  content = marked(content);
+  content = renderSemanticUI(content);
 
-	return content;
-}
+  return content;
+};
