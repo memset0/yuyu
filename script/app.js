@@ -1,6 +1,9 @@
 const path = require('path');
 const express = require('express');
 
+// register global router
+global.router = require('./router')
+
 // global config
 const config = require('./config');
 

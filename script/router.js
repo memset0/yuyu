@@ -1,23 +1,30 @@
-const fs = require('fs');
+const url = require('url');
 const path = require('path');
 
-const { File, listFiles } = require('./render/index')
+const { listFiles } = require('./render/index')
 
-function bind(app, config) {
-	let fileList = listFiles(path.join(__dirname, '..', 'src'));
-	fileList.forEach(file => {
-		app.get(file.uri, function (req, res, next) {
-
+let router = {
+	routes: {},
+	scan: function () {
+		let fileList = listFiles(path.join(__dirname, '../src'));
+		router.routes = {};
+		fileList.forEach(file => {
+			router.routes[file.uri] = file
 		})
-	})
+	},
+	data: function (req) {
+		let pathname = decodeURI(url.parse(req.url).pathname);
+		if (!Object.keys(router.routes).includes(pathname)) {
+			if (Object.keys(router.routes).includes(pathname + '/')) {
+				return { code: 302, res: { url: pathname + '/' }, };
+			} else {
+				return { code: 404 };
+			}
+		}
+		return router.routes[pathname].render({
+			req: req
+		});
+	},
+};
 
-	if (~config.alive_time) {
-		setTimeout(() => {
-			bind(app, config);
-		}, config.alive_time);
-	}
-}
-
-module.exports = {
-	bind: bind,
-}
+module.exports = router;
