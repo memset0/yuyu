@@ -98,9 +98,9 @@ const renderSemanticUI = (function () {
     // code highlight
     if ($('pre code').length) {
       $($('pre code')[0])
-        .append(`<link rel="stylesheet" href="/lib/highlight/tomorrow.css">
-			           <script src="/lib/highlight/highlight.min.js"></script>
-			           <script>hljs.initHighlightingOnLoad();</script>`)
+        .append('<link rel="stylesheet" href="/lib/highlight/tomorrow.css">' +
+			          '<script src="/lib/highlight/highlight.min.js"></script>' +
+			          '<script>hljs.initHighlightingOnLoad();</script>')
     }
     
     return $.html();
