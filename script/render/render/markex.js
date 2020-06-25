@@ -5,6 +5,7 @@ const path = require('path');
 const cheerio = require('cheerio');
 
 const marked = require('./marked');
+const global = require('../../global');
 
 let $ = cheerio.load('<html>');
 
@@ -69,5 +70,5 @@ function apiFactory(uriRoot, pathRoot) {
 
 module.exports = function (text, uri, path, arguments) {
 	let api = apiFactory(uri, path);
-	return marked(ejs.render(text, { ...api, ...arguments }));
+	return marked(ejs.render(text, { ...global, ...api, ...arguments }));
 }
