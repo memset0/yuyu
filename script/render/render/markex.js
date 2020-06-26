@@ -81,45 +81,44 @@ function apiFactory(uriRoot, pathRoot) {
 	return lib;
 }
 
-const extraMarkdownRender = {
-	image: text => text.replace(/!\[(.*?)\]\((.*?)\)/g, function (match, config, url, offset, string) {
-		if (!config.includes(':')) {
-			return match;
-		}
-		try {
-			let data = YAML.parse(config.replace('|', '\n').replace(':', ': '));
-			let element = $(`<img src=${url}>`);
-
-			// width & height
-			if (data.width) { element.css('width', data.width); }
-			if (data.height) { element.css('height', data.height); }
-			if (data.min_width || data['min-width']) { element.css('min-width', data.min_width || data['min-width']); }
-			if (data.max_width || data['max-width']) { element.css('max-width', data.max_width || data['max-width']); }
-			if (data.min_height || data['min-height']) { element.css('min-height', data.min_height || data['min-height']); }
-			if (data.max_height || data['max-height']) { element.css('max-height', data.max_height || data['max-height']); }
-
-			// custom settings
-			element.css('display', 'block');
-			element.css('margin', 'auto');
-			if (data.line) { element.css('height', data.line * 1.5 + 'em')}
-
-			// render html
-			return $.html(element);
-		} catch {
-			// catch error => return plain text
-			return match;
-		}
-	}),
+const extra = {
+	image: function ($) {
+		$('img').each(function () {
+			$(this).attr('alt').split(/\s*\|\s*/g).map(o => o.split(/:\s*/)).forEach(line => {
+				if (line.length == 1) {
+					let key = line[0];
+					if (key == 'half') { $(this).css({ zoom: '50%' }); }
+					if (key == 'center' || key == 'centroid') { $(this).css({ display: 'block', margin: 'auto' }); }
+				} else if (line.length == 2) {
+					let key = line[0], value = line[1];
+					if (key == 'width') { $(this).css({ width: value }); }
+					if (key == 'height') { $(this).css({ height: value }); }
+					if (key == 'min-width' || key == 'min_width') { $(this).css({ 'min-width': value }); }
+					if (key == 'max-width' || key == 'max_width') { $(this).css({ 'max-width': value }); }
+					if (key == 'min-height' || key == 'min_height') { $(this).css({ 'min-height': value }); }
+					if (key == 'max-height' || key == 'max_height') { $(this).css({ 'max-height': value }); }
+					if (key == 'line') { $(this).css({ height: value * 1.5 + 'em' }); }
+				}
+			})
+		});
+		return $;
+	},
 
 }
 
 module.exports = function (text, uri, path, arguments) {
 	let api = apiFactory(uri, path);
 	text = ejs.render(text, { ...global, ...api, ...arguments });
-	text = extraMarkdownRender.image(text);
 	text = marked(text)
-	return text;
-}
 
-// console.log(extraMarkdownRender.image('![height](htttps://memset0.cn)'))
-// console.log(extraMarkdownRender.image('![height:1em](htttps://memset0.cn)'))
+	let $ = cheerio.load(text);
+	extra.image($);
+
+	return $.html();
+};
+
+// (function () {
+// 	let $ = cheerio.load('<html><img alt="line: 7 |center"></html>');
+// 	extra.image($);
+// 	console.log($.html());
+// })();
