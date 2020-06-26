@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const YAML = require('yaml');
+const moment = require('moment');
 
 const utils = require('../utils');
 const render = require('../renders');
@@ -37,11 +38,12 @@ module.exports = {
 		let article = exec && exec.groups.article ? YAML.parse(exec.groups.article) : {};
 		let plain = exec && exec.groups.plain ? exec.groups.plain : text;
 
-		article.title = article.title;
 		if (!article.title) {
 			article.title = path.basename($.path, path.extname($.path));
 			if (article.title == 'index') { article.title = path.basename(path.join($.path, '..')); }
 		}
+
+		article.date = moment(article.date);
 
 		return {
 			code: 200,
