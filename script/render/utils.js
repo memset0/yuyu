@@ -1,3 +1,7 @@
+const cheerio = require('cheerio');
+
+let $ = cheerio.load('<html>');
+
 module.exports = {
 	createBreadcrumb: function (uri) {
 		let breadcrumb = [];
@@ -21,5 +25,14 @@ module.exports = {
 			}
 		});
 		return res;
-	}
+	},
+
+	createElement: (tag, html = '', actions = {}) => {
+		let element = $('<' + tag + '/>');
+		if (html) element.html(html);
+		Object.keys(actions).forEach(key => {
+			element[key](actions[key]);
+		})
+		return $.html(element);
+	},
 }
