@@ -91,6 +91,7 @@ const extra = {
 					if (key == 'center' || key == 'centroid') { $(this).css({ display: 'block', margin: 'auto' }); }
 				} else if (line.length == 2) {
 					let key = line[0], value = line[1];
+					if (key == 'zoom') { $(this).css({ zoom: value }); }
 					if (key == 'width') { $(this).css({ width: value }); }
 					if (key == 'height') { $(this).css({ height: value }); }
 					if (key == 'min-width' || key == 'min_width') { $(this).css({ 'min-width': value }); }
