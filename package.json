@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/memset0/yuyu#readme",
   "dependencies": {
+    "chalk": "^4.1.0",
     "cheerio": "^1.0.0-rc.3",
     "commander": "^5.1.0",
     "cookie-parser": "^1.4.5",

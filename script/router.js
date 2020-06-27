@@ -4,9 +4,10 @@ const path = require('path');
 const { listFiles } = require('./render/index')
 
 let router = {
+	root: path.join(__dirname, '../src'),
 	routes: {},
 	scan: function () {
-		let fileList = listFiles(path.join(__dirname, '../src'));
+		let fileList = listFiles(router.root);
 		router.routes = {};
 		fileList.forEach(file => {
 			router.routes[file.uri] = file
@@ -26,5 +27,7 @@ let router = {
 		});
 	},
 };
+
+router.scan();
 
 module.exports = router;
