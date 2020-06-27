@@ -97,7 +97,7 @@ const extra = {
 					if (key == 'max-width' || key == 'max_width') { $(this).css({ 'max-width': value }); }
 					if (key == 'min-height' || key == 'min_height') { $(this).css({ 'min-height': value }); }
 					if (key == 'max-height' || key == 'max_height') { $(this).css({ 'max-height': value }); }
-					if (key == 'line') { $(this).css({ height: value * 1.5 + 'em' }); }
+					if (key == 'line') { $(this).css({ 'max-height': value * 1.5 + 'em', 'max-width': '100%' }); }
 				}
 			})
 		});

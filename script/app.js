@@ -4,6 +4,7 @@ const YAML = require('yaml');
 const express = require('express');
 
 // register global arguments
+global.status = 'online';
 global.router = require('./router')
 global.config = YAML.parse(fs.readFileSync(path.join(__dirname, '../src/config.yml')).toString());
 

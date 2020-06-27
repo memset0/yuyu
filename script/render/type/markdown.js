@@ -43,7 +43,9 @@ module.exports = {
 			if (article.title == 'index') { article.title = path.basename(path.join($.path, '..')); }
 		}
 
-		article.date = moment(article.date);
+		if (article.date) {
+			article.date = moment(article.date);
+		}
 
 		return {
 			code: 200,

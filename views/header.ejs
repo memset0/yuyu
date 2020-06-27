@@ -2,6 +2,10 @@
 <html>
 
 <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
 	<title><%= title %></title>
 
 	<link rel='stylesheet' href='/css/style.css' />
@@ -18,25 +22,25 @@
 			<a href="/" class="header item" style="font-size: 1.2rem;">
 				<%= config.title %>
 			</a>
-			<% Object.keys(config.menu.links).forEach(link => {
-				let data = config.menu.links[link]; %>
-				<% if (typeof(data) === 'object') { %>
-					<div class="ui dropdown item">
-						<%= link %>
-						<i class="dropdown icon"></i>
-						<div class="menu">
-							<% Object.keys(data).forEach(link => { %>
-								<% if (link === 'divider') { %>
-									<div class=""></div>
-								<% } else { %>
-									<a class="item" href="<%- data[link] %>"><%= link %></a>
-								<% } %>
-							<% }); %>
-						</div>
-					</div>
-				<% } else { %>
-					<a class="item" href="<%- data %>"><%= link %></a>
-				<% } %>
+			<% Object.keys(config.menu.links).forEach(link => { %>
+			<% let data = config.menu.links[link]; %>
+			<% if (typeof(data) === 'object') { %>
+			<div class="ui dropdown item">
+				<%= link %>
+				<i class="dropdown icon"></i>
+				<div class="menu">
+					<% Object.keys(data).forEach(link => { %>
+					<% if (link === 'divider') { %>
+					<div class=""></div>
+					<% } else { %>
+					<a class="item" href="<%- data[link] %>"><%= link %></a>
+					<% } %>
+					<% }); %>
+				</div>
+			</div>
+			<% } else { %>
+			<a class="item" href="<%- data %>"><%= link %></a>
+			<% } %>
 			<% }); %>
 			<div class="right menu">
 				<div class="item">
@@ -50,4 +54,16 @@
 		</div>
 	</div>
 
-	<div class="ui main container" id="container" style="margin-top: 80px; margin-bottom: 60px;">
+	
+	<!-- <div class="ui sidebar visible inverted vertical menu">
+		<a class="item">
+			1
+		</a>
+		<a class="item">
+			2
+		</a>
+		<a class="item">
+			3
+		</a>
+	</div> -->
+	<div class="ui main container" id="container" style="margin-top: 6rem; margin-bottom: 4rem;">

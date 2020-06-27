@@ -16,7 +16,7 @@ module.exports = {
 			res: {
 				template: 'archive',
 				arguments: {
-					title: path.dirname($.path) + ' - 文件夹',
+					title: path.basename($.path) + ' - 文件夹',
 					articles: lodash.filter(utils.listFiles($.path), { type: 'markdown' }),
 				}
 			}

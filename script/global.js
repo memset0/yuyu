@@ -3,6 +3,9 @@ const path = require('path');
 const YAML = require('yaml');
 
 module.exports = {
+	fs: require('fs'),
+	url: require('url'),
+	path: require('path'),
 	lodash: require('lodash'),
 	cheerio: require('cheerio'),
 
