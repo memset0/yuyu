@@ -58,7 +58,7 @@ function apiFactory(uriRoot, pathRoot) {
 			return utils.createElement('iframe', 'Your browser does not support iframes.', {
 				attr: {
 					'class': 'md-pdf-viewer',
-					src: lib.uriResolve(path),
+					src: '/lib/pdfjs/web/viewer.html?file=' + encodeURIComponent(lib.uriResolve(path)),
 					width: width || 400,
 					height: height || 300,
 				}
