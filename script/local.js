@@ -57,26 +57,32 @@ ejs.compileFile = function(filePath, options) {
 	return ejs.compile(templateStr, options);
 }
 
-let template = {};
+module.exports = function() {
+	let template = {};
 
-static.list().forEach(file => {
-	dist.copyFileFrom(file.uri, file.path);
-	console.log(chalk.yellow('[static file]') + ' /' + path.relative(router.root, file.path) + chalk.yellowBright(' => ') + file.uri);
-});
-Object.values(router.routes).forEach(file => {
-	let data = file.render();
-	if (data.code != 200) {
-		console.log(chalk.red('[error' + data.code + ']') + ' ' + file.path);
-		return;
-	}
-	if (data.type == 'file') {
+	static.list().forEach(file => {
 		dist.copyFileFrom(file.uri, file.path);
-		console.log(chalk.blue('[file]') + ' /' + path.relative(router.root, file.path) + chalk.yellowBright(' => ') + file.uri);
-	} else if (data.type == 'page') {
-		if (!template[data.res.template]) {
-			template[data.res.template]= ejs.compileFile(path.join(__dirname, '../views/', data.res.template + '.ejs'));
+		console.log(chalk.yellow('[static file]') + ' /' + path.relative(router.root, file.path) + chalk.yellowBright(' => ') + file.uri);
+	});
+	Object.values(router.routes).forEach(file => {
+		let data = file.render();
+		if (data.code != 200) {
+			console.error(chalk.red('[error' + data.code + ']') + ' ' + file.path);
+			return;
 		}
-		dist.writeFile(file.uri + 'index.html', template[data.res.template]({ ...data.res.arguments }));
-		console.log(chalk.green('[page]') + ' /' + path.relative(router.root, file.path) + chalk.yellowBright(' => ') + file.uri + 'index.html');
-	}
-})
+		if (data.type == 'file') {
+			dist.copyFileFrom(file.uri, file.path);
+			console.log(chalk.blue('[file]') + ' /' + path.relative(router.root, file.path) + chalk.yellowBright(' => ') + file.uri);
+		} else if (data.type == 'page') {
+			if (!template[data.res.template]) {
+				template[data.res.template]= ejs.compileFile(path.join(__dirname, '../views/', data.res.template + '.ejs'));
+			}
+			dist.writeFile(file.uri + 'index.html', template[data.res.template]({ ...data.res.arguments }));
+			console.log(chalk.green('[page]') + ' /' + path.relative(router.root, file.path) + chalk.yellowBright(' => ') + file.uri + 'index.html');
+		}
+	})
+}
+
+if (require.main == module) {
+	module.exports();
+}

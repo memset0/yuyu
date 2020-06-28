@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+const chalk = require('chalk');
+const commander = require('commander');
+
+const package = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')).toString());
+const lib = {
+	www: require('../script/www'),
+	local: require('../script/local'),
+};
+
+function log(command, dialog) {
+	let spliter = '============================================================';
+	console.log(
+		chalk.grey(spliter) + '\n' +
+		'  ' + chalk.greenBright(`yuyu@${package.version}`) + ' -> ' + chalk.blueBright(command) + '\n' +
+		'  ' + dialog + '\n' +
+		chalk.grey(spliter) + '\n');
+}
+
+commander.command('server')
+	.option('-p, --port <int>', 'port for server')
+	.action(function(option) {
+		let port = option.port ? option.port : 3000;
+		log('server', `server is running on http://localhost:${port}`);
+		lib.www(port);
+	})
+
+commander.command('generate')
+	.action(function(option) {
+		log('generate', 'generate static files');
+		lib.local();
+	})
+
+if (require.main == module) {
+	commander.parse(process.argv);
+}
