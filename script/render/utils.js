@@ -35,4 +35,8 @@ module.exports = {
 		})
 		return $.html(element);
 	},
-}
+
+	decodeHTML: (content) => {
+		return $($('<div>').html(content)).text();
+	}
+};

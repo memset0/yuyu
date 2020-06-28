@@ -1,5 +1,7 @@
 const marked = require('marked');
 
+const utils = require('../utils');
+
 // const renderLaTeX = (function () {
 // 	if (!config.mathjax.enable) {
 // 		return function (content) { return content; };
@@ -58,7 +60,8 @@ const renderLaTeX = (function () {
   const specialCharacters = ['<', '>']
 
   const render = function (content, display) {
-    return katex.renderToString(content, {
+    content = utils.decodeHTML(content);
+    return katex.renderToString(utils.decodeHTML(content), {
       displayMode: display,
       throwOnError: false
     });
@@ -99,17 +102,17 @@ const renderSemanticUI = (function () {
     if ($('pre code').length) {
       $($('pre code')[0])
         .append('<link rel="stylesheet" href="/lib/highlight/tomorrow.css">' +
-			          '<script src="/lib/highlight/highlight.min.js"></script>' +
-			          '<script>hljs.initHighlightingOnLoad();</script>')
+          '<script src="/lib/highlight/highlight.min.js"></script>' +
+          '<script>hljs.initHighlightingOnLoad();</script>')
     }
-    
+
     return $.html();
   };
 })();
 
 module.exports = function (content) {
+  content = marked(content.replace(/\\/g, '\\\\'));
   content = renderLaTeX(content);
-  content = marked(content);
   content = renderSemanticUI(content);
 
   return content;
