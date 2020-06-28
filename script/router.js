@@ -10,6 +10,8 @@ let router = {
 		let fileList = listFiles(router.root);
 		router.routes = {};
 		fileList.forEach(file => {
+			if (file.uri) { file.uri = file.uri.replace(/\\/g, '/'); }
+			if (file.dirUri) { file.dirUri = file.dirUri.replace(/\\/g, '/'); }
 			router.routes[file.uri] = file
 		});
 		// console.log(router.routes); 

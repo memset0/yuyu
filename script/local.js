@@ -18,7 +18,7 @@ const static = (function () {
 		list: function () {
 			return rd.readFileSync(root).map(target => ({
 				path: target,
-				uri: path.join('/', path.relative(root, target)),
+				uri: path.join('/', path.relative(root, target)).replace(/\\/g, '/'),
 			}));
 		},
 	};
