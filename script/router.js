@@ -11,7 +11,8 @@ let router = {
 		router.routes = {};
 		fileList.forEach(file => {
 			router.routes[file.uri] = file
-		})
+		});
+		// console.log(router.routes); 
 	},
 	data: function (req) {
 		let pathname = decodeURI(url.parse(req.url).pathname);

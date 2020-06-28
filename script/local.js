@@ -4,6 +4,7 @@ const ejs = require('ejs');
 const path = require('path');
 const YAML = require('yaml');
 const chalk = require('chalk');
+const { requireLanguage } = require('highlight.js');
 
 // register global arguments
 global.status = 'offline';
