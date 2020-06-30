@@ -2,7 +2,7 @@
 
 <div id="archive" class="archive">
 	<% articles.forEach(file => { %>
-	<% article = file.render().res.arguments.article %>
+	<% article = file.render({submodule: {config: true, summary: true, breadcrumb: true}}).res.arguments.article %>
 	<div class="archive-article" style="margin-bottom: 2em;">
 
 		<div style="position: relative; height: 1rem; margin-bottom: 2em;">
@@ -33,7 +33,7 @@
 			</div>
 			<% } %>
 			<div class="content">
-				<div class="md" style="min-height: 2em; max-height: 20em; overflow: hidden;">
+				<div class="md" style="overflow: hidden;">
 					<%- article.content %>
 				</div>
 			</div>

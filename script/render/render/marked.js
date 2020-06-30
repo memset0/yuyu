@@ -57,7 +57,7 @@ const utils = require('../utils');
 const renderLaTeX = (function () {
   const katex = require('katex');
 
-  const specialCharacters = ['<', '>']
+  const specialCharacters = ['<', '>'];
 
   const render = function (content, display) {
     content = utils.decodeHTML(content);
@@ -100,10 +100,10 @@ const renderSemanticUI = (function () {
 
     // code highlight
     if ($('pre code').length) {
-      $($('pre code')[0])
-        .append('<link rel="stylesheet" href="/lib/highlight/tomorrow.css">' +
-          '<script src="/lib/highlight/highlight.min.js"></script>' +
-          '<script>hljs.initHighlightingOnLoad();</script>')
+      $($('pre code')[0]).append(
+        '<link rel="stylesheet" href="/lib/highlight/tomorrow.css">' +
+        '<script src="/lib/highlight/highlight.min.js"></script>' +
+        '<script>hljs.initHighlightingOnLoad();</script>');
     }
 
     return $.html();

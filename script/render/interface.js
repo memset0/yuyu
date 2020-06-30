@@ -5,9 +5,9 @@ class File {
 	read() { return fs.readFileSync(this.path).toString(); }
 	write(content) { return fs.writeFileSync(this.path, content); }
 
-	render(args) {
+	render(options = undefined) {
 		if (!lib[this.type].render) { return { code: 403 }; }
-		return lib[this.type].render(this, { ...args });
+		return lib[this.type].render(this, options);
 	}
 
 	constructor(path, { srcRoot, type = undefined }) {

@@ -28,23 +28,64 @@ module.exports = {
 		$.dirPath = path.normalize($.dirPath);
 	},
 
-	render: ($) => {
+	render: ($, options) => {
 		if (!fs.existsSync($.path)) {
 			return { code: 404 };
 		}
-
+		
+		if (!options) options = {};
+		if (!options.submodule) options.submodule = {config: true, complete: true, summary: false, breadcrumb: true};
+		
 		let text = fs.readFileSync($.path).toString();
 		let exec = /^(---+\n(?<article>[\s\S]+?)\n---+\n)?(?<plain>[\s\S]*)$/.exec(text);
+		
+		let data = {};
 		let article = exec && exec.groups.article ? YAML.parse(exec.groups.article) : {};
 		let plain = exec && exec.groups.plain ? exec.groups.plain : text;
+		
+		if (options.submodule.config) {
 
-		if (!article.title) {
-			article.title = path.basename($.path, path.extname($.path));
-			if (article.title == 'index') { article.title = path.basename(path.join($.path, '..')); }
+			if (!article.title) {
+				article.title = path.basename($.path, path.extname($.path));
+				if (article.title == 'index') { article.title = path.basename(path.join($.path, '..')); }
+			}
+
+			if (article.date) {
+				article.date = moment(article.date);
+			}
+			
+			data = {
+				...data,
+				...article
+			};
 		}
-
-		if (article.date) {
-			article.date = moment(article.date);
+		
+		if (options.submodule.complete) {
+			data = {
+				...data,
+				content: render.markex(plain, $.dirUri, $.dirPath, {
+					article: article,
+				}),
+			};
+		}
+		
+		if (options.submodule.summary) {
+			let summary_plain = plain;
+			summary_plain = summary_plain.split('<!--more-->')[0];
+			summary_plain = summary_plain.split('<!-- more -->')[0];
+			data = {
+				...data,
+				content: render.markex(summary_plain, $.dirUri, $.dirPath, {
+					article: article,
+				}),
+			}
+		}
+		
+		if (options.submodule.breadcrumb) {
+			data = {
+				...data,
+				breadcrumb: utils.createBreadcrumb($.uri),
+			};
 		}
 
 		return {
@@ -54,13 +95,7 @@ module.exports = {
 				template: 'article',
 				arguments: {
 					title: article.title + ' - 文章',
-					article: {
-						...article,
-						content: render.markex(plain, $.dirUri, $.dirPath, {
-							article: article,
-						}),
-						breadcrumb: utils.createBreadcrumb($.uri),
-					},
+					article: data,
 				},
 			}
 		};
