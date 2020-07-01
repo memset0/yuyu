@@ -43,13 +43,15 @@
 			<% } %>
 			<% }); %>
 			<div class="right menu">
-				<div class="item">
-					<div class="ui action left icon input">
-						<i class="search icon"></i>
-						<input type="text" placeholder="搜索">
-						<button class="ui button">提交</button>
+				<% if (global.status == 'online') { %>
+					<div class="item">
+						<div class="ui action left icon input">
+							<i class="search icon"></i>
+							<input type="text" id="search-input" placeholder="搜索">
+							<button class="ui button" id="search-button">提交</button>
+						</div>
 					</div>
-				</div>
+				<% } %>
 			</div>
 		</div>
 	</div>
