@@ -36,11 +36,12 @@ module.exports = {
 		if (!options) options = {};
 		if (!options.submodule) options.submodule = {config: true, complete: true, summary: false, breadcrumb: true};
 		
-		let text = fs.readFileSync($.path).toString();
+		let text = fs.readFileSync($.path).toString().replace(/\r\n/g, '\n');
 		let exec = /^(---+\n(?<article>[\s\S]+?)\n---+\n)?(?<plain>[\s\S]*)$/.exec(text);
 		
 		let data = {};
-		let article = exec && exec.groups.article ? YAML.parse(exec.groups.article) : {};
+		let article = exec && !exec.groups.article ? {} :
+			YAML.parse(exec.groups.article.replace(/\t/g, '  '));
 		let plain = exec && exec.groups.plain ? exec.groups.plain : text;
 		
 		if (options.submodule.config) {
