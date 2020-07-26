@@ -38,5 +38,65 @@ module.exports = {
 
 	decodeHTML: (content) => {
 		return $($('<div>').html(content)).text();
-	}
+	},
+
+	getProblemLink: (text) => {
+		const table = {
+			'洛谷': {
+				regex: [/^洛谷(\d+)$/, /^洛谷P(\d+)$/i, /^lg(\d+)$/i, /^luogu(\d+)$/i],
+				link: (match) => `https://www.luogu.com.cn/problem/${match[1]}`
+			},
+			'LOJ': {
+				regex: [/^loj(\d+)$/i, /^LibreOJ(\d+)$/i,],
+				link: (match) => `https://loj.ac/problem/${match[1]}`
+			},
+			'UOJ': {
+				regex: [/^uoj(\d+)$/i,],
+				link: (match) => `http://uoj.ac/problem/${match[1]}`
+			},
+			'CF': {
+				regex: [/^cf(\d+)([a-z]\d*)$/i],
+				link: (match) => `https://codeforces.com/contest/${match[1]}/problem/${match[2]}`
+			},
+			'GYM': {
+				regex: [/^gym(\d+)([a-z]\d*)$/i],
+				link: (match) => `https://codeforces.com/gym/${match[1]}/problem/${match[2]}`
+			},
+			'HDU': {
+				regex: [/^hdu(\d+)$/i],
+				link: (match) => `http://acm.hdu.edu.cn/showproblem.php?pid=${match[1]}`
+			},
+			'ZOJ': {
+				regex: [/^zoj(\d+)$/i],
+				// link: (match) => `http://acm.zju.edu.cn/onlinejudge/showProblem.do?problemCode=${match[1]}`
+				link: (match) => `https://vjudge.net/problem/ZOJ-${match[1]}/origin`
+			},
+			'Virtual Judge': {
+				regex: [/^vj-([^-]+)-([^-]+)/i],
+				link: (match) => `https://vjudge.net/problem/${match[1]}-${match[2]}`
+			}
+		}
+		text = String(text);
+		let result = null;
+		try {
+			Object.keys(table).forEach(name => {
+				if (result) return;
+				table[name].regex.forEach(regex => {
+					if (result) return;
+					let matched = text.match(regex);
+					if (matched) {
+						result = {
+							link: table[name].link(matched, text),
+							name: name
+						};
+					}
+				});
+			});
+		} catch (e) {
+			console.error(text);
+			console.error(e);
+			return null;
+		}
+		return result;
+	},
 };

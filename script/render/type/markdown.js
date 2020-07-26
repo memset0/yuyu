@@ -23,27 +23,30 @@ module.exports = {
 			$.dirPath = dirname;
 			$.dirUri = '/' + path.relative(srcRoot, dirname) + '/';
 		}
+
 		$.uri = path.normalize($.uri);
 		$.dirUri = path.normalize($.dirUri);
 		$.dirPath = path.normalize($.dirPath);
+
+		$.isPost = true;
 	},
 
 	render: ($, options) => {
 		if (!fs.existsSync($.path)) {
 			return { code: 404 };
 		}
-		
+
 		if (!options) options = {};
-		if (!options.submodule) options.submodule = {config: true, complete: true, summary: false, breadcrumb: true};
-		
+		if (!options.submodule) options.submodule = { config: true, complete: true, summary: false, breadcrumb: true };
+
 		let text = fs.readFileSync($.path).toString().replace(/\r\n/g, '\n');
 		let exec = /^(---+\n(?<article>[\s\S]+?)\n---+\n)?(?<plain>[\s\S]*)$/.exec(text);
-		
+
 		let data = {};
 		let article = exec && !exec.groups.article ? {} :
 			YAML.parse(exec.groups.article.replace(/\t/g, '  '));
 		let plain = exec && exec.groups.plain ? exec.groups.plain : text;
-		
+
 		if (options.submodule.config) {
 
 			if (!article.title) {
@@ -54,13 +57,34 @@ module.exports = {
 			if (article.date) {
 				article.date = moment(article.date);
 			}
-			
+
+			if (article.link || article.plink) {
+				let link = article.link || article.plink;
+				if (link != 'disable' && link != 'none' && link != 'null') {
+					let data = utils.getProblemLink(link);
+					if (data) {
+						article.link = data.link;
+						article.linkName = data.name;
+					} else {
+						article.link = link;
+						article.linkName = article.link_name || article.linkName || 'Link';
+					}
+				}
+			} else {
+				let link = path.basename($.uri);
+				let data = utils.getProblemLink(link);
+				if (data) {
+					article.link = data.link;
+					article.linkName = data.name;
+				}
+			}
+
 			data = {
 				...data,
 				...article
 			};
 		}
-		
+
 		if (options.submodule.complete) {
 			data = {
 				...data,
@@ -69,7 +93,7 @@ module.exports = {
 				}),
 			};
 		}
-		
+
 		if (options.submodule.summary) {
 			let summary_plain = plain;
 			summary_plain = summary_plain.split('<!--more-->')[0];
@@ -81,7 +105,7 @@ module.exports = {
 				}),
 			}
 		}
-		
+
 		if (options.submodule.breadcrumb) {
 			data = {
 				...data,

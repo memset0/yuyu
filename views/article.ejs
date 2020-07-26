@@ -18,7 +18,7 @@
 	</div>
 
 	<div class="ui card">
-		<% if (article.date) { %>
+		<% if (article.date || article.link) { %>
 		<div class="extra content">
 			<% if (article.date) { %>
 			<span class="left floated">
@@ -26,13 +26,31 @@
 				<%= article.date.format('YYYY-MM-DD HH:mm') %>
 			</span>
 			<% } %>
+			<% if (article.link) { %>
+			<span class="right floated">
+				<a href="<%= article.link %>" target="_blank">
+					<i class="external link alt icon"></i>
+					<%= article.linkName %>
+				</a>
+			</span>
+			<% } %>
 		</div>
 		<% } %>
 		<div class="content" style="padding: 0;">
-			<div class="md" style="margin: 1em; overflow: hidden;">
+			<div class="md" style="margin: 1em; overflow: hidden; font-size: 1.08em;">
 				<%- article.content %>
 			</div>
 		</div>
+		<% if (article.tag) { %>
+			<div class="extra content">
+				<% article.tag.forEach(tag => { %>
+					<span class="article-tag">
+						<i class="tag icon"></i>
+						<%= tag %>
+					</span>
+				<% }); %>
+			</div>
+		<% } %>
 	</div>
 </div>
 
