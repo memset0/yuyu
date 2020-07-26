@@ -63,7 +63,8 @@ const renderLaTeX = (function () {
     content = utils.decodeHTML(content);
     return katex.renderToString(utils.decodeHTML(content), {
       displayMode: display,
-      throwOnError: false
+      throwOnError: false,
+      strict: false,
     });
   };
 
