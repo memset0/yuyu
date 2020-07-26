@@ -11,11 +11,11 @@ module.exports = {
 
 	render: ($) => {
 		let articles = utils.listFiles($.path);
-		articles = lodash.filter(articles, { type: 'markdown' });
-		articles = lodash.sortBy(articles, file => {
-			let date = file.render({submodule: {config: true}}).res.arguments.article.date;
-			return (date ? -parseInt(date.format('x')) : Infinity);
-		});
+		articles = lodash.filter(articles, o => (o.type != 'file' && o.type != 'folder'));
+		articles = articles.map(o => ({ file: o, config: o.render({ submodule: { config: true } }).res.arguments.article }));
+		articles = lodash.filter(articles, o => (!o.config.hide));
+		articles = lodash.sortBy(articles, o => (o.config.date ? -parseInt(o.config.date.format('x')) : Infinity));
+		articles = articles.map(o => o.file);
 		return {
 			code: 200,
 			type: 'page',
