@@ -22,23 +22,31 @@
 		</div>
 
 		<div class="ui card" style="margin-top: 1em; margin-bottom: 1em;">
-			<% if (article.date || article.link) { %>
-			<div class="extra content">
-				<% if (article.date) { %>
-				<span class="left floated">
-					<i class="calendar icon"></i>
-					<%= article.date.format('YYYY-MM-DD HH:mm') %>
-				</span>
-				<% } %>
-				<% if (article.link) { %>
-				<span class="right floated">
-					<a href="<%= article.link %>" target="_blank">
-						<i class="external link alt icon"></i>
-						<%= article.linkName %>
-					</a>
-				</span>
-				<% } %>
-			</div>
+			<% if (article.date || article.link || (global.status == 'online' && config.option.allow_edit)) { %>
+				<div class="extra content">
+					<% if (article.date) { %>
+						<span class="left floated">
+							<i class="calendar icon"></i>
+							<%= article.date.format('YYYY-MM-DD HH:mm') %>
+						</span>
+					<% } %>
+					<% if (article.link || (global.status == 'online' && config.option.allow_edit)) { %>
+						<span class="right floated" style="margin-left: 1em">
+							<% if (article.link) { %>
+								<a href="<%= article.link %>" target="_blank">
+									<i class="external link alt icon"></i>
+									<%= article.linkName %>
+								</a>
+							<% } %>
+							<% if (global.status == 'online' && config.option.allow_edit) { %>
+								<a href="/edit?p=<%= article.uri %>" target="_blank" style="margin-left: 1em">
+									<i class="edit icon"></i>
+									Edit
+								</a>
+							<% } %>
+						</span>
+					<% } %>
+				</div>
 			<% } %>
 			<div class="content">
 				<div class="md" style="overflow: hidden; font-size: 1.08em;">

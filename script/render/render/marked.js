@@ -1,6 +1,7 @@
 const marked = require('marked');
 
 const utils = require('../utils');
+const config = require('../../global').config;
 
 // const renderLaTeX = (function () {
 // 	if (!config.mathjax.enable) {
@@ -55,6 +56,10 @@ const utils = require('../utils');
 // }
 
 const renderLaTeX = (function () {
+  if (!config.option.mathjax) {
+    return function (content) { content };
+  }
+
   const katex = require('katex');
 
   const specialCharacters = ['<', '>'];

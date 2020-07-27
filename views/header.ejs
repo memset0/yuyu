@@ -43,7 +43,7 @@
 			<% } %>
 			<% }); %>
 			<div class="right menu">
-				<% if (global.status == 'online') { %>
+				<% if (global.status == 'online' && config.option.allow_search) { %>
 					<div class="item">
 						<div class="ui action left icon input">
 							<i class="search icon"></i>

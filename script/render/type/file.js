@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = {
-	init: ($, pathname, srcRoot) => {
+	init: ($, pathname, source_root) => {
 		$.path = pathname = path.normalize(pathname);
-		$.uri = path.normalize('/' + path.relative(srcRoot, $.path));
+		$.uri = path.normalize('/' + path.relative(source_root, $.path));
 	},
 
 	render: ($) => {

@@ -11,17 +11,17 @@ module.exports = {
 		return (path.extname(pathname) == '.md');
 	},
 
-	init: ($, pathname, srcRoot) => {
+	init: ($, pathname, source_root) => {
 		$.path = pathname = path.normalize(pathname);
 		let dirname = path.dirname($.path);
 		if (path.basename($.path) == 'index.md') {
-			$.uri = '/' + path.relative(srcRoot, dirname) + '/';
+			$.uri = '/' + path.relative(source_root, dirname) + '/';
 			$.dirPath = dirname;
-			$.dirUri = '/' + path.relative(srcRoot, dirname) + '/';
+			$.dirUri = '/' + path.relative(source_root, dirname) + '/';
 		} else {
-			$.uri = '/' + path.relative(srcRoot, path.join(dirname, path.basename($.path, path.extname($.path)))) + '/';
+			$.uri = '/' + path.relative(source_root, path.join(dirname, path.basename($.path, path.extname($.path)))) + '/';
 			$.dirPath = dirname;
-			$.dirUri = '/' + path.relative(srcRoot, dirname) + '/';
+			$.dirUri = '/' + path.relative(source_root, dirname) + '/';
 		}
 
 		$.uri = path.normalize($.uri);
@@ -46,6 +46,11 @@ module.exports = {
 		let article = exec && !exec.groups.article ? {} :
 			YAML.parse(exec.groups.article.replace(/\t/g, '  '));
 		let plain = exec && exec.groups.plain ? exec.groups.plain : text;
+
+		data = {
+			path: $.path,
+			uri: $.uri,
+		};
 
 		if (options.submodule.config) {
 
