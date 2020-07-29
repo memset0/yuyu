@@ -97,7 +97,7 @@ router.get('/timeline', function (req, res, next) {
 	Object.values(global.router.routes).forEach(file => {
 		if (file.type == 'file' || file.type == 'folder') { return; }
 		let config = file.render({ submodule: { config: true } }).res.arguments.article;
-		if (!config.date) { return; }
+		if (config.hide || !config.date) { return; }
 		articles.push(config);
 	});
 	articles = articles.sort(function (a, b) {
