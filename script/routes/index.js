@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const global_arguments = require('../global');
+const path = require('path');
 
+const global_arguments = require('../global');
 
 router.get(/^.*$/, function (req, res, next) {
 	global.router.scan();
@@ -53,16 +54,35 @@ router.get('/tag/:tagName', function (req, res) {
 router.get('/search/:keyword', function (req, res, next) {
 	global.router.scan();
 
-	let keyword = req.params.keyword;
+	let keyword = decodeURIComponent(req.params.keyword);
+	let keywordRegExp = new RegExp(keyword, 'i');
 	let articles = [];
+	let unsortedArticles = [];
 
 	Object.values(global.router.routes).forEach(file => {
 		if (file.type == 'file' || file.type == 'folder') { return; }
-		if (file.uri && file.uri.includes(keyword)) {
-			articles.push(file);
+		let config = file.render({ submodule: { config: true } }).res.arguments.article;
+		let key = 0;
+		if (file.uri && file.uri.match(keywordRegExp)) {
+			key += 1000;
+		}
+		if (config.title && config.title.match(keywordRegExp)) {
+			key += 900;
+		}
+		console.log(config.title);
+		if (key) {
+			unsortedArticles.push({ file: file, key: key });
 		}
 	});
 
+	// console.log(keyword);
+	
+	unsortedArticles.sort((a, b) => {
+		if (a.key != b.key) return a.key - b.key;
+	});
+	articles = unsortedArticles.map((pair) => (pair.file));
+	console.log(articles.length);
+	
 	res.render('archive', {
 		title: keyword + ' - 搜索结果',
 		articles: articles,

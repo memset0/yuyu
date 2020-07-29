@@ -12,9 +12,16 @@ $(document).ready(function () {
 
 // search
 (function () {
+	if (location.pathname.startsWith('/search/')) {
+		let keyword = decodeURIComponent(location.pathname.replace(/^\/search\//, ''));
+		console.log(keyword);
+		$('#search-input').val(keyword);
+	}
+
 	function search() {
 		if ($('#search-input').val()) {
-			window.location.href = '/search/' + $('#search-input').val();
+			let keyword = encodeURIComponent($('#search-input').val());
+			window.location.href = '/search/' + keyword;
 		}
 	}
 
