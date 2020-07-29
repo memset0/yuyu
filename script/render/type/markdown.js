@@ -85,7 +85,7 @@ module.exports = {
 				}
 			}
 
-			if (!Object.keys('article').includes('allow_edit')) {
+			if (Object.keys(article).includes('allow_edit')) {
 				article.allow_edit = article.allow_edit ? true : false;
 			} else {
 				article.allow_edit = global.status == 'online' && config.option.allow_edit;
