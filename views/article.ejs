@@ -18,7 +18,7 @@
 	</div>
 
 	<div class="ui card">
-		<% if (article.date || article.link || (global.status == 'online' && config.option.allow_edit)) { %>
+		<% if (article.date || article.link || article.allow_edit) { %>
 			<div class="extra content">
 				<% if (article.date) { %>
 					<span class="left floated">
@@ -26,7 +26,7 @@
 						<%= article.date.format('YYYY-MM-DD HH:mm') %>
 					</span>
 				<% } %>
-				<% if (article.link || (global.status == 'online' && config.option.allow_edit)) { %>
+				<% if (article.link || article.allow_edit) { %>
 					<span class="right floated" style="margin-left: 1em">
 						<% if (article.link) { %>
 							<a href="<%= article.link %>" target="_blank">
@@ -34,7 +34,7 @@
 								<%= article.linkName %>
 							</a>
 						<% } %>
-						<% if (global.status == 'online' && config.option.allow_edit) { %>
+						<% if (article.allow_edit) { %>
 							<a href="/edit?p=<%= article.uri %>" target="_blank" style="margin-left: 1em">
 								<i class="edit icon"></i>
 								Edit

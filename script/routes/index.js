@@ -76,13 +76,13 @@ router.get('/search/:keyword', function (req, res, next) {
 	});
 
 	// console.log(keyword);
-	
+
 	unsortedArticles.sort((a, b) => {
 		if (a.key != b.key) return a.key - b.key;
 	});
 	articles = unsortedArticles.map((pair) => (pair.file));
 	console.log(articles.length);
-	
+
 	res.render('archive', {
 		title: keyword + ' - 搜索结果',
 		articles: articles,

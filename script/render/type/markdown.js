@@ -5,6 +5,7 @@ const moment = require('moment');
 
 const utils = require('../utils');
 const render = require('../renders');
+const config = require('../../global').config;
 
 module.exports = {
 	check: (pathname) => {
@@ -82,6 +83,12 @@ module.exports = {
 					article.link = data.link;
 					article.linkName = data.name;
 				}
+			}
+
+			if (!Object.keys('article').includes('allow_edit')) {
+				article.allow_edit = article.allow_edit ? true : false;
+			} else {
+				article.allow_edit = global.status == 'online' && config.option.allow_edit;
 			}
 
 			data = {
