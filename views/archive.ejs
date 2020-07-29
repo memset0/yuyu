@@ -5,20 +5,20 @@
 	<% article = file.render({submodule: {config: true, summary: true, breadcrumb: true}}).res.arguments.article %>
 	<div class="archive-article" style="margin-bottom: 2em;">
 
-		<div style="position: relative; height: 1rem; margin-bottom: 2em;">
+		<div style="margin-bottom: 2em;">
 			<% if (article && article.breadcrumb && article.breadcrumb.length) { %>
-			<div class="ui breadcrumb" style="position:absolute; left: 0;">
+			<div class="ui breadcrumb">
 				<% let len = article.breadcrumb.length; %>
 				<% for (let i = 0; i < len - 1; i++) { %>
 				<a href="<%- article.breadcrumb[i].href %>" class="section"><%= article.breadcrumb[i].name %></a>
 				<i class="right angle icon divider"></i>
 				<% }%>
 				<a href="<%- article.breadcrumb[len - 1].href %>" class="section"><%= article.breadcrumb[len - 1].name %></a>
+				<div style="margin-top: .6em; font-size: 1.2em; font-weight: bold;">
+					<%= article.title %>
+				</div>
 			</div>
 			<% } %>
-			<div style="position:absolute; right: 0; font-size: 1rem; font-weight: bold;">
-				<%= article.title %>
-			</div>
 		</div>
 
 		<div class="ui card" style="margin-top: 1em; margin-bottom: 1em;">
@@ -56,10 +56,10 @@
 			<% if (article.tag) { %>
 				<div class="extra content">
 					<% article.tag.forEach(tag => { %>
-						<span class="article-tag">
+						<a class="article-tag" href="/tag/<%= tag %>">
 							<i class="tag icon"></i>
 							<%= tag %>
-						</span>
+						</a>
 					<% }); %>
 				</div>
 			<% } %>

@@ -25,7 +25,6 @@ app.use(express.static(path.join(__dirname, '../static'), { maxAge: config.stati
 // router
 app.use('/', require('./routes/index'));
 app.use('/edit', require('./routes/editor')); 
-app.use('/search', require('./routes/search')); 
 
 // catch 404 error
 const createError = require('http-errors');

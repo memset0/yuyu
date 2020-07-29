@@ -6,6 +6,7 @@ const { listFiles } = require('./render/index')
 let router = {
 	root: path.join(__dirname, '../src'),
 	routes: {},
+
 	scan: function () {
 		let fileList = listFiles(router.root);
 		router.routes = {};
@@ -16,6 +17,7 @@ let router = {
 		});
 		// console.log(router.routes); 
 	},
+
 	data: function (req) {
 		let pathname = decodeURI(url.parse(req.url).pathname);
 		if (!Object.keys(router.routes).includes(pathname)) {
@@ -29,6 +31,7 @@ let router = {
 			req: req
 		});
 	},
+
 };
 
 router.scan();
