@@ -1,0 +1,33 @@
+<%- include('header', { template: 'timeline' }) %>
+
+<table class="ui celled table" id="timeline">
+	<thead>
+		<tr>
+			<th>标题</th>
+			<th>发布时间</th>
+			<th>标签</th>
+		</tr>
+	</thead>
+	<tbody>
+	<% for (article of articles) { %>
+		<tr>
+			<td><a href="<%- article.uri %>" target="_blank"><%= article.title %></a></td>
+			<td><%= article.date.format('YYYY年MM月DD日 HH:mm') %></td>
+			<td>
+				<% if (article.tag) article.tag.forEach(tag => { %>
+					<a class="article-tag" href="/tag/<%= tag %>" target="_blank">
+						<i class="tag icon"></i>
+						<%= tag %>
+					</a>
+				<% }); %>
+			</td>
+		</tr>
+		<% } %>
+	</tbody>
+</table>
+
+<style>
+	#timeline tr td a { color: inherit; }
+</style>
+
+<%- include('footer') %>

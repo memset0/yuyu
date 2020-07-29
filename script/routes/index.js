@@ -77,16 +77,37 @@ router.get('/search/:keyword', function (req, res, next) {
 
 	// console.log(keyword);
 
-	unsortedArticles.sort((a, b) => {
-		if (a.key != b.key) return a.key - b.key;
-	});
-	articles = unsortedArticles.map((pair) => (pair.file));
+	articles = unsortedArticles
+		.sort((a, b) => {
+			if (a.key != b.key) return a.key - b.key;
+		})
+		.map((pair) => (pair.file));
 	console.log(articles.length);
 
 	res.render('archive', {
 		title: keyword + ' - 搜索结果',
 		articles: articles,
 	});
+});
+
+
+router.get('/timeline', function (req, res, next) {
+	let articles = [];
+
+	Object.values(global.router.routes).forEach(file => {
+		if (file.type == 'file' || file.type == 'folder') { return; }
+		let config = file.render({ submodule: { config: true } }).res.arguments.article;
+		if (!config.date) { return; }
+		articles.push(config);
+	});
+	articles = articles.sort(function (a, b) {
+		return b.date.format('x') - a.date.format('x');
+	});
+
+	res.render('timeline', {
+		title: '时间轴',
+		articles: articles,
+	})
 });
 
 
