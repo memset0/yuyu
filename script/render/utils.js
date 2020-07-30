@@ -2,7 +2,11 @@ const cheerio = require('cheerio');
 
 let $ = cheerio.load('<html>');
 
-module.exports = {
+const utils = {
+	isNumberChar: function(c) {
+		return '0'.charCodeAt() <= c.charCodeAt() && c.charCodeAt() <= '9'.charCodeAt();
+	},
+
 	createBreadcrumb: function (uri) {
 		let breadcrumb = [];
 		let href = '/';
@@ -44,7 +48,7 @@ module.exports = {
 		const table = {
 			'洛谷': {
 				regex: [/^洛谷(\d+)$/, /^洛谷P(\d+)$/i, /^lg(\d+)$/i, /^luogu(\d+)$/i],
-				link: (match) => `https://www.luogu.com.cn/problem/${match[1]}`
+				link: (match) => `https://www.luogu.com.cn/problem/P${match[1]}`,
 			},
 			'LOJ': {
 				regex: [/^loj(\d+)$/i, /^LibreOJ(\d+)$/i,],
@@ -100,3 +104,5 @@ module.exports = {
 		return result;
 	},
 };
+
+module.exports = utils;
