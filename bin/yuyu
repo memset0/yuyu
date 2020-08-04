@@ -11,6 +11,7 @@ const package = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json
 const lib = {
 	www: require('../script/www'),
 	local: require('../script/local'),
+	cmdtools: require('../script/cmdtools'),
 };
 
 function log(command, dialog) {
@@ -24,17 +25,22 @@ function log(command, dialog) {
 
 commander.command('server')
 	.option('-p, --port <int>', 'port for server')
-	.action(function(option) {
+	.action(function (option) {
 		let port = option.port ? option.port : 3000;
 		log('server', `server is running on http://localhost:${port}`);
 		lib.www(port);
 	})
 
 commander.command('generate')
-	.action(function(option) {
+	.action(function (option) {
 		log('generate', 'generate static files');
 		lib.local();
 	})
+
+commander.command('edit <uri>')
+	.action(function (option) {
+		lib.cmdtools.edit(option);
+	});
 
 if (require.main == module) {
 	commander.parse(process.argv);
