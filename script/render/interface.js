@@ -3,9 +3,11 @@ const lib = require('./types');
 
 class File {
 	read() { return fs.readFileSync(this.path).toString(); }
+	readJSON() { return fs.readFileSync(this.path).toJSON(); }
 	write(content) { return fs.writeFileSync(this.path, content); }
+	writeJSON(content) { return fs.writeFileSync(this.path, JSON.stringify(content)); }
 
-	render(options = undefined) {
+	render(options = null) {
 		if (!lib[this.type].render) { return { code: 403 }; }
 		return lib[this.type].render(this, options);
 	}

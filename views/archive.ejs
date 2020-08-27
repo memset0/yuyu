@@ -2,7 +2,7 @@
 
 <div id="archive" class="archive">
 	<% articles.forEach(file => { %>
-	<% article = file.render({submodule: {config: true, summary: true, breadcrumb: true}}).res.arguments.article %>
+	<% article = file.render({submodule: ['config', 'summary', 'breadcrumb']}).res.arguments.article %>
 	<div class="archive-article" style="margin-bottom: 2em;">
 
 		<div style="margin-bottom: 2em;">

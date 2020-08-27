@@ -38,7 +38,7 @@ router.get('/tag/:tagName', function (req, res) {
 
 	Object.values(global.router.routes).forEach(file => {
 		if (file.type == 'file' || file.type == 'folder') { return; }
-		let config = file.render({ submodule: { config: true } }).res.arguments.article;
+		let config = file.render({ submodule: ['config'] }).res.arguments.article;
 		if (config.tag && config.tag.includes(tagName)) {
 			articles.push(file);
 		}
@@ -61,7 +61,7 @@ router.get('/search/:keyword', function (req, res, next) {
 
 	Object.values(global.router.routes).forEach(file => {
 		if (file.type == 'file' || file.type == 'folder') { return; }
-		let config = file.render({ submodule: { config: true } }).res.arguments.article;
+		let config = file.render({ submodule: ['config'] }).res.arguments.article;
 		let key = 0;
 		if (file.uri && file.uri.match(keywordRegExp)) {
 			key += 1000;
@@ -96,7 +96,7 @@ router.get('/timeline', function (req, res, next) {
 
 	Object.values(global.router.routes).forEach(file => {
 		if (file.type == 'file' || file.type == 'folder') { return; }
-		let config = file.render({ submodule: { config: true } }).res.arguments.article;
+		let config = file.render({ submodule: ['config'] }).res.arguments.article;
 		if (config.hide || !config.date) { return; }
 		articles.push(config);
 	});

@@ -38,7 +38,7 @@ module.exports = {
 		}
 
 		if (!options) options = {};
-		if (!options.submodule) options.submodule = { config: true, complete: true, summary: false, breadcrumb: true };
+		if (!options.submodule) options.submodule = ['config', 'complete', 'breadcrumb'];
 
 		let text = fs.readFileSync($.path).toString().replace(/\r\n/g, '\n');
 		let exec = /^(---+\n(?<article>[\s\S]+?)\n---+\n)?(?<plain>[\s\S]*)$/.exec(text);
@@ -53,7 +53,7 @@ module.exports = {
 			uri: $.uri,
 		};
 
-		if (options.submodule.config) {
+		if (options.submodule.includes('config')) {
 
 			if (!article.title) {
 				article.title = path.basename($.path, path.extname($.path));
@@ -97,7 +97,7 @@ module.exports = {
 			};
 		}
 
-		if (options.submodule.complete) {
+		if (options.submodule.includes('complete')) {
 			data = {
 				...data,
 				content: render.markex(plain, $.dirUri, $.dirPath, {
@@ -106,7 +106,7 @@ module.exports = {
 			};
 		}
 
-		if (options.submodule.summary) {
+		if (options.submodule.includes('summary')) {
 			let summary_plain = plain;
 			summary_plain = summary_plain.split('<!--more-->')[0];
 			summary_plain = summary_plain.split('<!-- more -->')[0];
@@ -118,7 +118,7 @@ module.exports = {
 			}
 		}
 
-		if (options.submodule.breadcrumb) {
+		if (options.submodule.includes('breadcrumb')) {
 			data = {
 				...data,
 				breadcrumb: utils.createBreadcrumb($.uri),

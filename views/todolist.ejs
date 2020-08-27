@@ -1,0 +1,21 @@
+<%- include('header', { template: 'todolist' }) %>
+
+<div id="todolist">
+	<div class="title article-title">
+		<%= todo.title %>
+	</div>
+
+	<div class="ui styled accordion">
+		<% todo.list.forEach((item => { %>
+			<div class="title item-color-<%= item.color %>">
+				<i class="dropdown icon"></i>
+				<%= item.content %>
+			</div>
+			<div class="content">
+				<%- item.preview %>
+			</div>
+		<% })) %>
+	</div>
+</div>
+
+<%- include('footer') %>

@@ -1,0 +1,38 @@
+#todolist {
+	width: 95%;
+	margin: auto;
+
+	&>.ui.styled.accordion {
+		width: 97.5%;
+		margin: auto;
+	}
+
+	.__todolist-item-color(@p) {
+		&.item-color-red {
+			color: rgba(255, 0, 0, @p);
+		}
+
+		&.item-color-green {
+			color: rgba(0, 255, 0, @p);
+		}
+
+		&.item-color-yellow {
+			color: rgba(245, 215, 0, @p);
+		}
+
+		&.item-color-black {
+			color: rgba(0, 0, 0, @p);
+		}
+	}
+
+	.ui.accordion {
+		.title {
+			.__todolist-item-color(.4);
+		}
+
+		.title:hover,
+		.active.title {
+			.__todolist-item-color(.95);
+		}
+	}
+}
