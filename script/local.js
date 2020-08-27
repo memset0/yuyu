@@ -45,7 +45,7 @@ const dist = (function () {
 		},
 	};
 
-	api.makedirs('root');
+	api.makedirs(root);
 	return api;
 })();
 
