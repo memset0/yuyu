@@ -1,11 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const YAML = require('yaml');
-const moment = require('moment');
-
-const utils = require('../utils');
-const render = require('../renders');
-const config = require('../../global').config;
 
 module.exports = {
 	check: (pathname) => {

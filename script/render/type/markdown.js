@@ -4,7 +4,7 @@ const YAML = require('yaml');
 const moment = require('moment');
 
 const utils = require('../utils');
-const render = require('../renders');
+const render = require('../render');
 const config = require('../../global').config;
 
 module.exports = {
