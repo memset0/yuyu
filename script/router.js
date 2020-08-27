@@ -4,7 +4,7 @@ const path = require('path');
 const { listFiles } = require('./render/index')
 
 let router = {
-	root: path.join(__dirname, '../src'),
+	root: process.env['YUYU_SOURCE'] || path.join(__dirname, '../src'),
 	routes: {},
 
 	scan: function () {

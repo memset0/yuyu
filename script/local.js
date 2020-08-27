@@ -7,9 +7,10 @@ const chalk = require('chalk');
 const { requireLanguage } = require('highlight.js');
 
 // register global arguments
+global.source_dir = process.env['YUYU_SOURCE'] || path.join(__dirname, '../src/');
 global.status = 'offline';
 global.router = require('./router')
-global.config = YAML.parse(fs.readFileSync(path.join(__dirname, '../src/config.yml')).toString());
+global.config = YAML.parse(fs.readFileSync(path.join(source_dir, 'config.yml')).toString());
 
 // static files api
 const static = (function () {
