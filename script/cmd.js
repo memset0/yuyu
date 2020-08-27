@@ -5,7 +5,7 @@ const { exec } = require('child_process');
 const router = require('./router');
 const config = require('./global').config;
 
-let cmd = {
+const commandLineTools = {
 	edit: function (uri) {
 		if (!uri.startsWith('/')) uri = '/' + uri;
 		if (!uri.endsWith('/')) uri = uri + '/';
@@ -20,4 +20,4 @@ let cmd = {
 	}
 };
 
-module.exports = cmd;
+module.exports = commandLineTools;

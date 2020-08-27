@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const YAML = require('yaml');
 const chalk = require('chalk');
+const process = require('process');
 const commander = require('commander');
 
 const config = YAML.parse(fs.readFileSync(path.join(__dirname, '../src/config.yml')).toString());
@@ -11,7 +12,8 @@ const package = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json
 const lib = {
 	www: require('../script/www'),
 	local: require('../script/local'),
-	cmdtools: require('../script/cmdtools'),
+	spider: require('../script/spider'),
+	cmdtools: require('../script/cmd'),
 };
 
 function log(command, dialog) {
@@ -32,14 +34,28 @@ commander.command('server')
 	})
 
 commander.command('generate')
-	.action(function (option) {
+	.action(function () {
 		log('generate', 'generate static files');
 		lib.local();
 	})
 
 commander.command('edit <uri>')
-	.action(function (option) {
-		lib.cmdtools.edit(option);
+	.action(function (uri) {
+		lib.cmdtools.edit(uri);
+	});
+
+commander.command('spider <url>')
+	.action(async function (url) {
+		let data = await lib.spider(url);
+		let text = '---\n';
+		Object.keys(data.data).forEach(key => {
+			let value = data.data[key].replace('\n', '\\n').replace('"', '\"').replace('\\', '\\\\');
+			text += key + ': "' + value + '"\n'
+		});
+		text += '---\n\n' + data.text;
+		console.log(url, data.name, data.data);
+		fs.mkdirSync(path.join(process.cwd(), data.name), { recursive: true });
+		fs.writeFileSync(path.join(process.cwd(), data.name, 'index.md'), text);
 	});
 
 if (require.main == module) {
