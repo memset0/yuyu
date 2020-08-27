@@ -84,6 +84,9 @@ function apiFactory(uriRoot, pathRoot) {
 const extra = {
 	image: function ($) {
 		$('img').each(function () {
+			if (!this || !$(this).attr('alt')) {
+				return;
+			}
 			$(this).attr('alt').split(/\s*\|\s*/g).map(o => o.split(/:\s*/)).forEach(line => {
 				if (line.length == 1) {
 					let key = line[0];
