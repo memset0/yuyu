@@ -1,21 +1,31 @@
 <%- include('header', { template: 'todolist' }) %>
 
+<% function render(item) { %>
+	<div class="title item-color-<%= item.color %>">
+		<i class="dropdown icon"></i>
+		<%= item.title %>
+	</div>
+	<div class="content">
+		<%- item.description.map(e => '<p>' + e + '</p>').join('') %>
+		<%- item.preview %>
+		<% if (item.children.length) { %>
+			<div class="accordion">
+				<% item.children.forEach(child => render(child)) %>
+			</div>
+		<% } %>
+	</div>
+<% } %>
+
 <div id="todolist">
 	<div class="title article-title">
 		<%= todo.title %>
 	</div>
-
 	<div class="ui styled accordion">
-		<% todo.list.forEach((item => { %>
-			<div class="title item-color-<%= item.color %>">
-				<i class="dropdown icon"></i>
-				<%= item.content %>
-			</div>
-			<div class="content">
-				<%- item.preview %>
-			</div>
-		<% })) %>
+		<% todo.children.forEach(child => render(child)) %>
 	</div>
 </div>
+
+
+<%= JSON.stringify(todo.error_message) %>
 
 <%- include('footer') %>

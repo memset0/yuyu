@@ -1,6 +1,29 @@
 const fs = require('fs');
 const path = require('path');
 
+class Todo {
+	push_description(text) {
+		if (!this.link && (text.startsWith('http://') || text.startsWith('https://'))) {
+			this.link = text;
+			return;
+		}
+		this.description.push(text);
+	}
+
+	push_children(item) {
+		this.children.push(item);
+	}
+
+	constructor(title, { color = null, link = null, preview = null } = more) {
+		this.title = title;
+		this.link = link;
+		this.color = color;
+		this.preview = preview;
+		this.description = [];
+		this.children = [];
+	}
+}
+
 module.exports = {
 	check: (pathname) => {
 		return (path.extname(pathname) == '.todo');
@@ -30,14 +53,33 @@ module.exports = {
 		}
 
 		let text = fs.readFileSync($.path).toString();
-
-		let title = path.basename($.path, path.extname($.path));
-		let todolist = [];
+		let root = new Todo(path.basename($.path, path.extname($.path)), {});
+		let stack = [root];
+		let error_message = [];
 
 		text.split('\n').forEach((line, index) => {
-			if (line && line.length > 3 && line[0] == '[' && line[2] == ']') {
+			let depth = 0;
+			while (true) {
+				depth++;
+				if (line.length >= 4 && line.slice(0, 4) == '    ') {
+					line = line.slice(4);
+				} else if (line.length >= 1 && line[0] == '\t') {
+					line = line.slice(1);
+				} else {
+					break;
+				}
+			}
+			
+			let is_todoitem = line.length > 3 && line[0] == '[' && line[2] == ']';
+			if (is_todoitem) {
+				if (depth > stack.length + 1) {
+					error_message.push(index);
+					return;
+				}
+				
+				let title;
 				let item = {};
-
+				
 				let status = line[1];
 				switch (status) {
 					case 'x': item.color = 'green'; break;
@@ -45,7 +87,7 @@ module.exports = {
 					case ' ': item.color = 'black'; break;
 					default: item.color = 'yellow'; break;
 				}
-
+				
 				let content = line.slice(4);
 				let file = null;
 				if (Object.keys(router.routes).includes(content)) {
@@ -55,17 +97,38 @@ module.exports = {
 				}
 				if (file) {
 					let rendered = file.render({ submodule: ['config', 'summary'] })
+					title = rendered.res.arguments.article.title;
 					item.link = content;
-					item.content = rendered.res.arguments.article.title;
 					item.preview = rendered.res.arguments.article.content;
 				} else {
-					item.content = content;
+					title = content;
+				}
+				
+				while (stack.length > depth) {
+					stack.pop();
+				}
+				if (stack.length == depth) {
+					console.log(title);
+
+					let now = new Todo(title, item);
+					stack[depth - 1].push_children(now);
+					stack.push(now);
+				} else {
+					error_message.push(index);
+					return;
 				}
 
-				todolist.push(item);
-				// console.log(item);
-			} else if (index == 0) {
-				title = line;
+			} else {
+				--depth;
+				if (depth >= stack.length) {
+					error_message.push(index);
+					return;
+				}
+
+				while (stack.length > depth + 1) {
+					stack.pop();
+				}
+				stack[depth].push_description(line);
 			}
 		});
 
@@ -75,11 +138,10 @@ module.exports = {
 			res: {
 				template: 'todolist',
 				arguments: {
-					title: title + ' - TodoList',
-					todo: {
-						title: title,
-						list: todolist,
-					}
+					title: root.title + ' - TodoList',
+					todo: root,
+					source_text: text,
+					error_mesage: error_message,
 				},
 			}
 		};
