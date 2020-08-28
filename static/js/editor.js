@@ -9,8 +9,8 @@
 	$('#editor-submit').click(function () {
 		text = $('#editor-main').val();
 
-		console.log('data: ', data);
-		console.log('text: ', text);
+		// console.log('data: ', data);
+		// console.log('text: ', text);
 		$.post('/edit', {
 			text: text,
 			type: type,

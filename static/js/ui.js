@@ -14,7 +14,7 @@ $(document).ready(function () {
 (function () {
 	if (location.pathname.startsWith('/search/')) {
 		let keyword = decodeURIComponent(location.pathname.replace(/^\/search\//, ''));
-		console.log(keyword);
+		// console.log(keyword);
 		$('#search-input').val(keyword);
 	}
 

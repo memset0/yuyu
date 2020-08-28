@@ -69,7 +69,7 @@ router.get('/search/:keyword', function (req, res, next) {
 		if (config.title && config.title.match(keywordRegExp)) {
 			key += 900;
 		}
-		console.log(config.title);
+		// console.log(config.title);
 		if (key) {
 			unsortedArticles.push({ file: file, key: key });
 		}

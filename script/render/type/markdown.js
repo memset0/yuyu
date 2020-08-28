@@ -78,7 +78,7 @@ module.exports = {
 				}
 			} else {
 				let link = path.basename($.uri);
-				let data = utils.getProblemLink(link);
+				let data = utils.getProblemLink(link) || (article.title && utils.getProblemLink(article.title.split(' ')[0]));
 				if (data) {
 					article.link = data.link;
 					article.linkName = data.name;
