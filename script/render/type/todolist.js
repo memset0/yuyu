@@ -3,7 +3,7 @@ const path = require('path');
 
 class Todo {
 	push_description(text) {
-		console.log([text, this.link]);
+		// console.log([text, this.link]);
 		if (!this.link && (text.startsWith('http://') || text.startsWith('https://'))) {
 			this.link = text;
 			return;
@@ -113,7 +113,7 @@ module.exports = {
 					stack.pop();
 				}
 				if (stack.length == depth) {
-					console.log(title);
+					// console.log(title);
 
 					let now = new Todo(title, item);
 					stack[depth - 1].push_children(now);
@@ -130,10 +130,15 @@ module.exports = {
 					return;
 				}
 
-				while (stack.length > depth + 1) {
-					stack.pop();
+				if (index == 0 && depth == 0) {
+					root.title = line;
+					
+				} else {
+					while (stack.length > depth + 1) {
+						stack.pop();
+					}
+					stack[depth].push_description(line);
 				}
-				stack[depth].push_description(line);
 			}
 		});
 
