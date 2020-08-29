@@ -3,8 +3,12 @@ const path = require('path');
 
 class Todo {
 	push_description(text) {
+		console.log([text, this.link]);
 		if (!this.link && (text.startsWith('http://') || text.startsWith('https://'))) {
 			this.link = text;
+			return;
+		} else if (!this.link && text.startsWith('href: ')) {
+			this.link = text.slice(5);
 			return;
 		}
 		this.description.push(text);
@@ -69,25 +73,26 @@ module.exports = {
 					break;
 				}
 			}
-			
-			let is_todoitem = line.length > 3 && line[0] == '[' && line[2] == ']';
+
+			let is_todoitem = line.length > 3 && line[0] == '[' && line[2] == ']' &&
+				(line[1] == ' ' || line[1] == '-' || line[1] == 'o' || line[1] == 'x');
 			if (is_todoitem) {
 				if (depth > stack.length + 1) {
 					error_message.push(index);
 					return;
 				}
-				
+
 				let title;
 				let item = {};
-				
+
 				let status = line[1];
 				switch (status) {
 					case 'x': item.color = 'green'; break;
 					case '-': item.color = 'red'; break;
+					case 'o': item.color = 'yellow'; break;
 					case ' ': item.color = 'black'; break;
-					default: item.color = 'yellow'; break;
 				}
-				
+
 				let content = line.slice(4);
 				let file = null;
 				if (Object.keys(router.routes).includes(content)) {
@@ -103,7 +108,7 @@ module.exports = {
 				} else {
 					title = content;
 				}
-				
+
 				while (stack.length > depth) {
 					stack.pop();
 				}

@@ -4,6 +4,9 @@
 	<div class="title item-color-<%= item.color %>">
 		<i class="dropdown icon"></i>
 		<%= item.title %>
+		<% if (item.link) { %>
+			<a href="<%= item.link %>" target="_blank"><i class="external link alt icon"></i></a>
+		<% } %>
 	</div>
 	<div class="content">
 		<%- item.description.map(e => '<p>' + e + '</p>').join('') %>
@@ -25,7 +28,10 @@
 	</div>
 </div>
 
-
-<%= JSON.stringify(todo.error_message) %>
+<script>
+	window.todo = {
+		root: JSON.parse("<%- JSON.stringify(todo).replace(/\\/g, '\\\\').replace(/"/g, '\\"') %>")
+	}
+</script>
 
 <%- include('footer') %>
