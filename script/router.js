@@ -1,6 +1,7 @@
 const url = require('url');
 const path = require('path');
 
+const config = require('./global').config;
 const { listFiles } = require('./render/index')
 
 let router = {
@@ -11,9 +12,15 @@ let router = {
 		let fileList = listFiles(router.root);
 		router.routes = {};
 		fileList.forEach(file => {
-			if (file.uri) { file.uri = file.uri.replace(/\\/g, '/'); }
-			if (file.dirUri) { file.dirUri = file.dirUri.replace(/\\/g, '/'); }
-			router.routes[file.uri] = file
+			let satisify = true;
+			file.path.split('/').forEach(part => {
+				satisify &= !config.ignore.includes(part);
+			});
+			if (satisify) {
+				if (file.uri) file.uri = file.uri.replace(/\\/g, '/');
+				if (file.dirUri) file.dirUri = file.dirUri.replace(/\\/g, '/');
+				router.routes[file.uri] = file;
+			}
 		});
 		// console.log(router.routes); 
 	},
