@@ -29,7 +29,7 @@ const static = (function () {
 
 // dist files api
 const dist = (function () {
-	let root = path.join(__dirname, '../dist');
+	let root = process.env['YUYU_DIST'] || path.join(__dirname, '../dist');
 	let api = {
 		makedirs: function (target) {
 			fs.mkdirSync(target, { recursive: true });
