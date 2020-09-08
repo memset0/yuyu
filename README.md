@@ -5,6 +5,7 @@
 ```shell
 git clone https://github.com/memset0/yuyu
 cd yuyu
+npm install
 chmod +x ./bin/yuyu
 ln -s ./bin/yuyu /usr/local/bin
 ```
