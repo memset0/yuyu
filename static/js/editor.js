@@ -15,6 +15,8 @@
 			text: text,
 			type: type,
 			uri: uri,
+		}, function() {
+			window.location.href = uri;
 		});
 	})
 

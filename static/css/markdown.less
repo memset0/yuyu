@@ -1,5 +1,56 @@
 .md {
 
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-weight: normal;
+		margin-top: 1.2em;
+		margin-bottom: 0.6em;
+	}
+
+	h1 {
+		font-size: 28px;
+	}
+
+	h2 {
+		font-size: 26px;
+	}
+
+	h3 {
+		font-size: 22px;
+	}
+
+	p {
+		font-size: 16px;
+		line-height: 1.6em;
+		margin-bottom: 0.5em !important;
+
+		&:last-child {
+			margin-bottom: 0 !important;
+		}
+	}
+
+	pre {
+		box-shadow: 0 1px 2px 0 rgba(34, 36, 38, .15);
+		margin: 1rem 0;
+		padding: 1em 1em;
+		border-radius: .28571429rem;
+		border: 1px solid rgba(34, 36, 38, .15);
+	}
+
+	.hljs {
+		font-size: 15px;
+		line-height: 1.55em;
+		padding: 0;
+		font-family: consolas, Menlo, 'Ubuntu Mono', monospace;
+	}
+
+
+	// plugins
+
 	.md-iframe {
 		display: block;
 		margin: auto;
@@ -16,10 +67,4 @@
 	.md-iframe-onedrive {
 		.md-iframe();
 	}
-
-}
-
-.hljs {
-	line-height: 1.6em;
-	font-family: consolas, Menlo, 'Ubuntu Mono', monospace;
 }

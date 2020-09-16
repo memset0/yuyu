@@ -16,49 +16,48 @@
 	<div class="title article-title">
 		<%= article.title %>
 	</div>
+	<% if (article.tag) { %>
+		<div class="article-tag-group">
+			<% article.tag.forEach(tag => { %>
+				<a class="article-tag" href="/tag/<%= tag %>" target="_blank">
+					<i class="tag icon"></i>
+					<%= tag %>
+				</a>
+			<% }); %>
+		</div>
+	<% } %>
+	<div class="ui divider"></div>
 
-	<div class="ui card">
-		<% if (article.date || article.link || article.allow_edit) { %>
-			<div class="extra content">
-				<% if (article.date) { %>
-					<span class="left floated">
-						<i class="calendar icon"></i>
-						<%= article.date.format('YYYY-MM-DD HH:mm') %>
-					</span>
-				<% } %>
-				<% if (article.link || article.allow_edit) { %>
-					<span class="right floated" style="margin-left: 1em">
-						<% if (article.link) { %>
-							<a href="<%= article.link %>" target="_blank">
-								<i class="external link alt icon"></i>
-								<%= article.linkName %>
-							</a>
-						<% } %>
-						<% if (article.allow_edit) { %>
-							<a href="/edit?p=<%= article.uri %>" target="_blank" style="margin-left: 1em">
-								<i class="edit icon"></i>
-								Edit
-							</a>
-						<% } %>
-					</span>
-				<% } %>
-			</div>
-		<% } %>
-		<div class="content" style="padding: 0;">
-			<div class="md" style="margin: 1em; overflow: hidden; font-size: 1.08em;">
-				<%- article.content %>
+	<div class="view">
+		<div class="left">
+			<div class="content">
+				<div class="md" style="overflow: hidden; font-size: 1.08em;">
+					<%- article.content %>
+				</div>
 			</div>
 		</div>
-		<% if (article.tag) { %>
-			<div class="extra content">
-				<% article.tag.forEach(tag => { %>
-					<span class="article-tag">
-						<i class="tag icon"></i>
-						<%= tag %>
+		<div class="right">
+			<div class="ui secondary pointing fluid vertical menu">
+				<% if (article.date) { %>
+					<span class="item">
+						<i class="calendar icon"></i>
+						<%= article.date.format('YYYY年MM月DD日 HH:mm') %>
 					</span>
-				<% }); %>
+				<% } %>
+				<% if (article.link) { %>
+					<a class="item" href="<%= article.link %>" target="_blank">
+						<i class="external link alt icon"></i>
+						题目链接（<%= article.linkName %>）
+					</a>
+				<% } %>
+				<% if (article.allow_edit) { %>
+					<a class="item" href="/edit?p=<%= article.uri %>">
+						<i class="edit icon"></i>
+						在网页编辑器中编辑
+					</a>
+				<% } %>
 			</div>
-		<% } %>
+			</div>
 	</div>
 </div>
 
