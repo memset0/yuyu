@@ -1,0 +1,23 @@
+<%- include('header', { template: 'article' }) %>
+
+<div id="article">
+
+	<% if (article && article.breadcrumb && article.breadcrumb.length) { %>
+	<div class="ui breadcrumb">
+		<% let len = article.breadcrumb.length; %>
+		<% for (let i = 0; i < len - 1; i++) { %>
+		<a href="<%- article.breadcrumb[i].href %>" class="section"><%= article.breadcrumb[i].name %></a>
+		<i class="right angle icon divider"></i>
+		<% }%>
+		<div class="active section"><%= article.breadcrumb[len - 1].name %></div>
+	</div>
+	<% } %>
+
+	<div class="content">
+		<div class="md" style="overflow: hidden; font-size: 1.08em;">
+			<%- article.content %>
+		</div>
+	</div>
+</div>
+
+<%- include('footer') %>

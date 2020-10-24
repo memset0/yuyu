@@ -41,7 +41,7 @@ module.exports = {
 		if (!options.submodule) options.submodule = ['config', 'complete', 'breadcrumb'];
 
 		let text = fs.readFileSync($.path).toString().replace(/\r\n/g, '\n');
-		let exec = /^(---+\n(?<article>[\s\S]+?)\n---+\n)?(?<plain>[\s\S]*)$/.exec(text);
+		let exec = /^(---+\n(?<article>[\s\S]+?)\n---+)?(?<plain>[\s\S]*)$/.exec(text);
 
 		let data = {};
 		let article = exec && !exec.groups.article ? {} :
@@ -129,7 +129,7 @@ module.exports = {
 			code: 200,
 			type: 'page',
 			res: {
-				template: 'article',
+				template: article.template ? article.template : 'article',
 				arguments: {
 					title: article.title + ' - 文章',
 					article: data,
