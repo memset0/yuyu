@@ -106,6 +106,13 @@ const renderSemanticUI = (function () {
 
     // code highlight
     if ($('pre code').length) {
+      $('pre code').each(function () {
+        $(this).html($(this).html().replace(/\\\\/g, '\\'));
+        $(this).html($(this).html().replace(/namespace mem{(.+)[\s\S]*?} \/\/ namespace mem\n/,
+          'namespace mem{$1 ' +
+          '<span style="background: #d0d0d0; border-radius: 2px;">...</span> ' +
+          '<span style="color: #4d4d4c !important">}</span>\n'));
+      });
       $($('pre code')[0]).append(
         '<link rel="stylesheet" href="/lib/highlight/tomorrow.css">' +
         '<script src="/lib/highlight/highlight.min.js"></script>' +
