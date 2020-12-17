@@ -104,6 +104,9 @@ const renderSemanticUI = (function () {
     // style for table
     $('table').addClass('ui celled table');
 
+    // style for blockquote
+    $('blockquote').addClass('ui message');
+
     // code highlight
     if ($('pre code').length) {
       $('pre code').each(function () {

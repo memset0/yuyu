@@ -35,11 +35,12 @@ function apiFactory(uriRoot, pathRoot) {
 			}
 			return '\n' + '```' + language + '\n' + lib.includePlain(path) + '\n' + '```' + '\n';
 		},
-		includeImage: (path) => {
+		includeImage: (path, alt = '') => {
 			let $ = cheerio.load('<img>');
 			let base64 = lib.includeBuffer(path).toString('base64');
-			$.attr({
+			$('img').attr({
 				src: 'data:image/' + lib.extname(path) + ';base64,' + base64,
+				alt: alt
 			});
 			return $.html();
 		},
