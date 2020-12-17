@@ -2,13 +2,20 @@ const url = require('url');
 const path = require('path');
 
 const config = require('./global').config;
-const { listFiles } = require('./render/index')
+const { listFiles } = require('./render/index');
+
+const retiredTimeLimit = 1000 * 30; // 30 seconds
 
 let router = {
 	root: process.env['YUYU_SOURCE'] || path.join(__dirname, '../src'),
 	routes: {},
+	lastScanTime: -1,
 
 	scan: function () {
+		if (Date.now() - this.lastScanTime <= retiredTimeLimit) {
+			return;
+		}
+
 		let fileList = listFiles(router.root);
 		router.routes = {};
 		fileList.forEach(file => {
@@ -22,11 +29,13 @@ let router = {
 				router.routes[file.uri] = file;
 			}
 		});
-		// console.log(router.routes); 
+
+		this.lastScanTime = Date.now();
 	},
 
-	data: function (req) {
+	data: function (req, options) {
 		let pathname = decodeURI(url.parse(req.url).pathname);
+
 		if (!Object.keys(router.routes).includes(pathname)) {
 			if (Object.keys(router.routes).includes(pathname + '/')) {
 				return { code: 302, res: { url: pathname + '/' }, };
@@ -35,7 +44,8 @@ let router = {
 			}
 		}
 		return router.routes[pathname].render({
-			req: req
+			req: req,
+			options: options
 		});
 	},
 
