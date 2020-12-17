@@ -21,7 +21,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, '../static')));
-app.use(express.static(path.join(__dirname, '../static'), { maxAge: config.static.max_age }));
+app.use(express.static(path.join(__dirname, '../static'), {
+  dotfiles: 'deny',
+  maxAge: config.static.max_age
+}));
 
 // router
 app.use(require('./routes/middleware/page'))
