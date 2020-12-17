@@ -4,10 +4,8 @@
 	let data = JSON.parse(decodeURIComponent(__yuyu_editor_data));
 	let { type, uri } = data;
 
-	$('#editor-main').val(text);
-
 	$('#editor-submit').click(function () {
-		text = $('#editor-main').val();
+		text = monaco_editor.getValue();
 
 		// console.log('data: ', data);
 		// console.log('text: ', text);
@@ -15,9 +13,8 @@
 			text: text,
 			type: type,
 			uri: uri,
-		}, function() {
+		}, function () {
 			window.location.href = uri;
 		});
 	})
-
 })();

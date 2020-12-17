@@ -2,10 +2,7 @@
 
 <div id="editor" style="width: 90%; margin: auto">
 	<div class="ui card" style="width: 100%">
-		<div class="ui form">
-			<textarea id="editor-main" rows="30" style="width: calc(100% - 2em); margin: 1em 1em 1.5em; font-family: monospace">
-
-			</textarea>
+		<div id="editor-main" rows="30" style="width: calc(100% - 2em); height: 500px; margin: 1em 1em 1.5em; font-family: monospace">
 		</div>
 		<div class="extra-content">
 			<button class="ui button" id="editor-submit" style="width: calc(100% - 2em); margin: 0 1em 1em;">
@@ -15,13 +12,27 @@
 	</div>
 </div>
 
-
 <script>
 	var __yuyu_editor_text = "<%= encodeURIComponent(data.text) %>";
 	var __yuyu_editor_data = "<%= encodeURIComponent(JSON.stringify({
 		type: data.type,
 		uri: data.uri,
 	})) %>";
+</script>
+
+<script type="text/javascript" src="/lib/monaco-editor/vs/loader.js"></script>
+<script>
+	require.config({ paths: { 'vs': '/lib/monaco-editor/vs' } });
+	require(['vs/editor/editor.main'], function () {
+		window.monaco_editor = monaco.editor.create(document.getElementById('editor-main'), {
+			value: decodeURIComponent(__yuyu_editor_text),
+			// language: 'markdown',
+			wordWrap: 'on',
+			minimap: {
+				enabled: false
+			},
+		});
+	});
 </script>
 
 <script type="text/javascript" src="/js/editor.js"></script>
