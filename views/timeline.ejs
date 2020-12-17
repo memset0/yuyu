@@ -3,23 +3,27 @@
 <table class="ui celled compact table" id="timeline">
 	<thead>
 		<tr>
-			<th>分类</th>
+			<th style="min-width:55px" class="center aligned">分类</th>
 			<th>标题</th>
-			<th>发布时间</th>
+			<th style="min-width:180px">发布时间</th>
 			<th>标签</th>
 		</tr>
 	</thead>
 	<tbody>
 	<% for (article of articles) { %>
 		<tr>
-			<td><a href="<%- '/' + article.uri.split('/')[1] + '/' %>" target="_blank"><%= article.uri.split('/')[1] %></a></td>
+			<td class="center aligned">
+				<a href="<%- '/' + article.uri.split('/')[1] + '/' %>" target="_blank"><%= article.uri.split('/')[1] %></a>
+			</td>
 			<td>
 				<a href="<%= article.uri %>" target="_blank"><%= article.title %></a>
 				<% if (article.link) { %>
-					<a href="<%= article.link %>" target="_blank" style="font-size: 30%; color: grey"><i class="external link alt icon"></i></a>
+					<a href="<%= article.link %>" target="_blank" style="font-size: 30%; color: grey; font-size: 12px;"><i class="external link alt icon"></i></a>
 				<% } %>
 			</td>
-			<td><%= article.date.format('YYYY年MM月DD日 HH:mm') %></td>
+			<td class="left aligned">
+				<%= article.date.format('YYYY年MM月DD日 HH:mm') %>
+			</td>
 			<td>
 				<% if (article.tag) article.tag.forEach(tag => { %>
 					<a class="article-tag" href="/tag/<%= tag %>" target="_blank">
