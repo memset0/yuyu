@@ -24,8 +24,9 @@ app.use(lessMiddleware(path.join(__dirname, '../static')));
 app.use(express.static(path.join(__dirname, '../static'), { maxAge: config.static.max_age }));
 
 // router
+app.use(require('./routes/middleware/page'))
 app.use('/', require('./routes/index'));
-app.use('/edit', require('./routes/editor')); 
+app.use('/edit', require('./routes/editor'));
 
 // catch 404 error
 const createError = require('http-errors');

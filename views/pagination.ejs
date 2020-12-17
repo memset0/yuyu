@@ -1,0 +1,43 @@
+<%
+	if (typeof page !== 'undefined' && typeof max_page !== 'undefined' && page && max_page && max_page > 1) {
+		let pageSet = new Set();
+		for (let i = 1; i <= 3 && i <= max_page; i++) {
+			pageSet.add(i);
+		}
+		for (let i = max_page; i > max_page - 3 && i >= 1; i--) {
+			pageSet.add(i);
+		}
+		for (let i = page - 1; i <= page + 1; i++)
+			if (1 <= i && i <= max_page) {
+				pageSet.add(i);
+			}
+%>
+	<div class="ui container" id="pagination-<%= location %>">
+		<div class="ui pagination menu">
+<%
+	const currect_page = page;
+	for (let page = 1; page <= max_page; page++) {
+		if (!pageSet.has(page) && !pageSet.has(page - 1)) {
+			continue;
+		}
+		if (pageSet.has(page)) {
+%>
+			<a class="<%= page == currect_page ? 'active' : '' %> item">
+				<%= page %>
+			</a>
+<%
+    } else {
+%>
+			<div class="disabled item">
+				...
+			</div>
+<%
+		}
+	}
+%>
+		</div>
+	</div>
+	<script type="text/javascript" src="/js/pagination.js"></script>
+<%
+	}
+%>

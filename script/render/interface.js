@@ -9,6 +9,8 @@ class File {
 
 	render(options = null) {
 		if (!lib[this.type].render) { return { code: 403 }; }
+		if (!options) options = {};
+		if (options.options) options = { ...options, ...options.options };
 		return lib[this.type].render(this, options);
 	}
 

@@ -1,5 +1,7 @@
 <%- include('header', { template: 'archive' }) %>
 
+<%- include('pagination', { location: 'front' }) %>
+
 <div id="archive" class="archive">
 	<% articles.forEach(file => { %>
 	<% article = file.render({submodule: ['config', 'summary', 'breadcrumb']}).res.arguments.article %>
@@ -67,5 +69,7 @@
 	</div>
 	<% }) %>
 </div>
+
+<%- include('pagination', { location: 'back' }) %>
 
 <%- include('footer') %>
