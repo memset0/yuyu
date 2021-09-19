@@ -3,7 +3,7 @@ const lodash = require('lodash');
 
 const utils = require('../utils');
 
-const perPageLimit = 20;
+const perPageLimit = 10;
 
 module.exports = {
 	init: ($, pathname, source_root) => {

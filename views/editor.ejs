@@ -25,7 +25,7 @@
 	require.config({ paths: { 'vs': '/lib/monaco-editor/vs' } });
 	require(['vs/editor/editor.main'], function () {
 		window.monaco_editor = monaco.editor.create(document.getElementById('editor-main'), {
-			value: decodeURIComponent(__yuyu_editor_text),
+			value: decodeURIComponent(__yuyu_editor_text).replace(/&#39;/g, '\''),
 			// language: 'markdown',
 			wordWrap: 'on',
 			minimap: {

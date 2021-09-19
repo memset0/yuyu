@@ -4,9 +4,9 @@
   "description": "yuyu",
   "main": "index.js",
   "scripts": {
-    "test": "./bin/yuyu server",
-    "server": "./bin/yuyu server",
-    "generate": "./bin/yuyu generate"
+    "test": "node ./bin/yuyu server",
+    "server": "node ./bin/yuyu server",
+    "generate": "node ./bin/yuyu generate"
   },
   "repository": {
     "type": "git",
