@@ -37,7 +37,7 @@
     "mathjax": "^3.0.5",
     "mathjax-full": "^3.0.5",
     "md5": "^2.2.1",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "morgan": "^1.10.0",
     "rd": "^2.0.1",
     "string-random": "^0.1.3",
